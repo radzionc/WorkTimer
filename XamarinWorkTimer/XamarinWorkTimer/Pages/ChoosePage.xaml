@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinWorkTimer.Pages.ChoosePage"
+             Padding="10, 5, 5, 10">
+
+  <StackLayout>
+    <Entry x:Name="entry"
+           Placeholder="New Item"
+           FontSize="Large"
+           TextChanged="OnTextChanged"
+           Completed="EntryInputCompleted"/>
+    
+    <ScrollView>
+      <StackLayout x:Name="itemsLayout"/>
+    </ScrollView>
+  </StackLayout>
+
+</ContentPage>

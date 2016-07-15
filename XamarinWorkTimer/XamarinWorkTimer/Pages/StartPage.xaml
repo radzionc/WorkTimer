@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinWorkTimer.Pages.StartPage">
+
+  <StackLayout>
+    <StackLayout Orientation="Horizontal"
+                 VerticalOptions="Start"
+                 HorizontalOptions="FillAndExpand"
+                 Padding="0, 20, 0, 0">
+
+      <Button x:Name="statisticButton"
+              Text="Statistic"
+              HorizontalOptions="FillAndExpand"
+              Clicked="StatisticButtonClicked"/>
+
+      <Button x:Name="chooseButton"
+              Text="Choose Job"
+              HorizontalOptions="FillAndExpand"
+              Clicked="ChooseButtonClicked"/>
+    </StackLayout>
+
+    <StackLayout Orientation="Horizontal"
+                 VerticalOptions="Start">
+      
+      <Label x:Name="constSummaryTime"
+             Text="Summary time"
+             FontSize="Large"/>
+
+      <Label x:Name="summaryTime"
+             FontSize="Large"/>
+    </StackLayout>
+     
+    <StackLayout VerticalOptions="Center"
+                 Padding ="0, 50, 0, 50">
+      <Label x:Name="leftTime"
+             FontSize="Large"
+             VerticalTextAlignment="Center"
+             HorizontalTextAlignment="Center"/>
+    </StackLayout>
+
+  <StackLayout Orientation="Horizontal"
+               VerticalOptions="Start"
+               HorizontalOptions="FillAndExpand"
+               IsEnabled ="false"
+               Padding="0, 20, 0, 0">
+
+      <Button x:Name="pauseButton"
+              Text="pause"
+              HorizontalOptions="FillAndExpand"
+              IsEnabled ="false"
+              Clicked="PauseButtonClicked"/>
+
+      <Button x:Name="stopButton"
+              Text="stop"
+              HorizontalOptions="FillAndExpand"
+              IsEnabled ="false"
+              Clicked="StopButtonClicked"/>
+    </StackLayout>
+    
+  <Slider x:Name="slider"
+          Maximum="60"
+          Minimum="1"
+          ValueChanged="OnSliderValueChanged"/>
+
+  </StackLayout>
+</ContentPage>
