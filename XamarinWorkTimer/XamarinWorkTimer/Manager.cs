@@ -67,6 +67,9 @@ namespace XamarinWorkTimer
                 int delay = interval - preventInterval;
                 if (delay > 0)
                 {
+                    if(startPage.LeftTime <= delay)
+                        delay = startPage.LeftTime;
+
                     chooseLine.Time += delay;
                     databaseManager.UpdateItem(chooseLine.Name, delay);
                     startPage.SummaryTime += delay;

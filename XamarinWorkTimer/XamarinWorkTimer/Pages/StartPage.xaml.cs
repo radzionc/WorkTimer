@@ -29,12 +29,11 @@ namespace XamarinWorkTimer.Pages
         }
 
         private int leftTimeValue;
-        public int LeftTime
+        public int LeftTimes
         {
             set
             {
                 leftTimeValue = value;
-                if (leftTimeValue < 0)  leftTimeValue = 0;
                 leftTime.Text = gf.FromSecondsToString(leftTimeValue);
                 if (leftTimeValue == 0) StopButtonClicked(null, EventArgs.Empty);
             }

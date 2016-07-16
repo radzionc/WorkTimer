@@ -18,7 +18,7 @@ namespace XamarinWorkTimer
             database.CreateTable<DatabaseItem>();
 
             intervalsDatabase = DependencyService.Get<ISQLite>().GetConnection("intervalsDatabase");
-            intervalsDatabase.CreateTable<DatabaseTimeInterval>();
+            intervalsDatabase.CreateTable<DatabaseIntervals>();
 
             summaryDatabase = DependencyService.Get<ISQLite>().GetConnection("summaryDatabase");
             summaryDatabase.CreateTable<DatabaseSummary>();
@@ -33,9 +33,9 @@ namespace XamarinWorkTimer
             return (from i in database.Table<DatabaseItem>() select i).ToList();
         }
 
-        public IEnumerable<DatabaseTimeInterval> GetIntervals()
+        public IEnumerable<DatabaseIntervals> GetIntervals()
         {
-            return (from i in intervalsDatabase.Table<DatabaseTimeInterval>() select i).ToList();
+            return (from i in intervalsDatabase.Table<DatabaseIntervals>() select i).ToList();
         }
         public IEnumerable<DatabaseSummary> GetSummaries()
         {
@@ -48,6 +48,10 @@ namespace XamarinWorkTimer
             return database.Table<DatabaseItem>().FirstOrDefault(x => x.Name == name);
         }
 
+        public DatabaseSummary getSummary(string date)
+        {
+            return summaryDatabase.Table<DatabaseSummary>().FirstOrDefault(x => x.Date == date);
+        }
         public int SummaryTime()
         {
             int result = 0;
@@ -60,17 +64,20 @@ namespace XamarinWorkTimer
 
         public void AddItem(DatabaseItem item)
         {
-            database.Insert(item);
+           database.Insert(item);
         }
 
-        public void AddInterval(DatabaseTimeInterval interval)
+        public void AddInterval(DatabaseIntervals interval)
         {
             intervalsDatabase.Insert(interval);
         }
 
         public void AddSumary(DatabaseSummary summary)
         {
-            summaryDatabase.Insert(summary);
+            if (getSummary(summary.Date) == null)
+                summaryDatabase.Insert(summary);
+            else
+                summaryDatabase.Update(summary);
         }
 
         public void CleanTime()
@@ -80,7 +87,7 @@ namespace XamarinWorkTimer
 
         public void cleanInterval()
         {
-            intervalsDatabase.DeleteAll<DatabaseTimeInterval>();
+            intervalsDatabase.DeleteAll<DatabaseIntervals>();
         }
         public void UpdateItem(string name, int seconds)
         {
