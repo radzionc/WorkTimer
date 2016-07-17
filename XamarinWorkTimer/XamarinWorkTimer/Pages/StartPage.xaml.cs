@@ -6,15 +6,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using XamarinWorkTimer.Pages.Elements;
+using XamarinWorkTimer;
 
 namespace XamarinWorkTimer.Pages
 {
     public partial class StartPage : ContentPage
     {
-        Manager manager;
-        
         private int summaryTimeValue;
+        private int leftTimeValue;
         public int SummaryTime
         {
             set
@@ -27,15 +26,12 @@ namespace XamarinWorkTimer.Pages
                 return summaryTimeValue;
             }
         }
-
-        private int leftTimeValue;
-        public int LeftTimes
+        public int LeftTime
         {
             set
             {
                 leftTimeValue = value;
                 leftTime.Text = gf.FromSecondsToString(leftTimeValue);
-                if (leftTimeValue == 0) StopButtonClicked(null, EventArgs.Empty);
             }
             get
             {
@@ -43,87 +39,65 @@ namespace XamarinWorkTimer.Pages
             }
         }
 
-        private bool stopTimer = true;
-        public bool StopTimer
+
+        public event EventHandler StatisticButtonClicked;
+        public event EventHandler ChooseButtonClicked;
+        public event EventHandler PauseButtonClicked;
+        public event EventHandler StopButtonClicked;
+
+        public void TimerUI()
         {
-            get
-            {
-                return stopTimer;
-            }
-            set
-            {
-                stopTimer = value;
+            chooseButton.IsEnabled = false;
+            statisticButton.IsEnabled = false;
+            slider.IsEnabled = false;
 
-                if (StopTimer == false)
-                {
-                    chooseButton.IsEnabled = false;
-                    statisticButton.IsEnabled = false;
-                    slider.IsEnabled = false;
-
-                    stopButton.IsEnabled = true;
-                    pauseButton.IsEnabled = true;
-                }
-                if (StopTimer == true && pauseButton.Text == "pause")
-                {
-                    chooseButton.IsEnabled = true;
-                    statisticButton.IsEnabled = true;
-                    slider.IsEnabled = true;
-
-                    stopButton.IsEnabled = false;
-                    pauseButton.IsEnabled = false;
-                }
-            }
-        }
-     
-
-        public StartPage(Manager pageManager)
-        {
-            InitializeComponent();
-            StopTimer = true;
-            this.manager = pageManager;
-            slider.Value = (int)App.Current.Properties[gf.slider] + 1;
-
-            manager.Midnight += (object sender, EventArgs args) =>
-            {
-                SummaryTime = 0;
-            };
+            stopButton.IsEnabled = true;
+            pauseButton.IsEnabled = true;
         }
 
-        public void StatisticButtonClicked(object sender, EventArgs args)
+        public void NoTimerUI()
         {
-            
-        }
+            chooseButton.IsEnabled = true;
+            statisticButton.IsEnabled = true;
+            slider.IsEnabled = true;
 
-        public void ChooseButtonClicked(object sender, EventArgs args)
-        {
-            manager.OnChoosePage();
-        }
+            stopButton.IsEnabled = false;
+            pauseButton.IsEnabled = false;
 
-        public void PauseButtonClicked(object sender, EventArgs args)
-        {
-            if (StopTimer == true)
-            {
-                pauseButton.Text = gf.pause;
-                manager.StartTime += DateTime.Now - manager.PauseTime;
-            }
-            else
-            {
-                pauseButton.Text = gf.resume;
-                manager.PauseTime = DateTime.Now;
-            }
-            StopTimer = !StopTimer;
-        }
-
-        public void StopButtonClicked(object sender, EventArgs args)
-        {
             pauseButton.Text = gf.pause;
             LeftTime = (int)slider.Value * 60;
-            StopTimer = true;
+        }
+
+        public StartPage()
+        {
+            InitializeComponent();
+            NoTimerUI();
+            slider.Value = (int)App.Current.Properties[gf.slider] + 1;       
+        }
+
+        public void OnStatisticButtonClicked(object sender, EventArgs args)
+        {
+            StatisticButtonClicked?.Invoke(null, EventArgs.Empty);
+        }
+                    
+        public void OnChooseButtonClicked(object sender, EventArgs args)
+        {
+            ChooseButtonClicked?.Invoke(null, EventArgs.Empty);
+        }
+
+        public void OnPauseButtonClicked(object sender, EventArgs args)
+        {
+            pauseButton.Text = (pauseButton.Text == gf.pause) ? gf.resume : gf.pause;
+            PauseButtonClicked?.Invoke(null, EventArgs.Empty);
+        }
+
+        public void OnStopButtonClicked(object sender, EventArgs args)
+        {
+            StopButtonClicked?.Invoke(null, EventArgs.Empty);
         }
 
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
-            leftTime.Text = gf.FromSecondsToString((int)slider.Value * 60);
             LeftTime = (int)slider.Value * 60;
             App.Current.Properties[gf.slider] = (int)slider.Value;
         }

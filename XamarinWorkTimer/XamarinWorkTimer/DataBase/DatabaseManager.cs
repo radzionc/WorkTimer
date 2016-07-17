@@ -24,7 +24,7 @@ namespace XamarinWorkTimer
             summaryDatabase.CreateTable<DatabaseSummary>();
 
             //database.DeleteAll<DatabaseItem>();
-            //intervalsDatabase.DeleteAll<DatabaseTimeInterval>();
+            //intervalsDatabase.DeleteAll<DatabaseIntervals>();
             //summaryDatabase.DeleteAll<DatabaseSummary>();
         }
 

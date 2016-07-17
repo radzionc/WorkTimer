@@ -36,13 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="CustomEventArgs.cs" />
     <Compile Include="DataBase\DatabaseSummary.cs" />
     <Compile Include="DataBase\DatabaseManager.cs" />
-    <Compile Include="DataBase\DatabaseTimeInterval.cs" />
+    <Compile Include="DataBase\DatabaseIntervals.cs" />
     <Compile Include="gf.cs" />
     <Compile Include="INotification.cs" />
     <Compile Include="ISQLite.cs" />
-    <Compile Include="Manager.cs" />
     <Compile Include="Pages\ChoosePage.xaml.cs">
       <DependentUpon>ChoosePage.xaml</DependentUpon>
     </Compile>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using XamarinWorkTimer;
 using Xamarin.Forms;
 using XamarinWorkTimer.Pages.Elements;
 
@@ -11,29 +11,19 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class ChoosePage : ContentPage
     {
-        Manager manager;
         private const int maxInputLength = 12;
-        public ChoosePage(Manager manager)
+        public ChoosePage()
         {
             InitializeComponent();
-            this.manager = manager;
         }
 
-        public void AddLine(string name, int time = 0)
+        public event EventHandler InputCompleted;
+
+        public void AddLine(ChooseLine chooseLine)
         {
-            ChooseLine newLine = new ChooseLine(name, time);
-            manager.AddEventsOnLine(newLine);
-            manager.Midnight += (object sender, EventArgs args) =>
-            {
-                newLine.Time = 0;
-            };
-            newLine.DeleteButtonClick += (object sender, EventArgs args) =>
-            {
-                itemsLayout.Children.Remove(newLine);
-            };
-            itemsLayout.Children.Add(newLine);
+            chooseLine.DeleteButtonClick += delegate { itemsLayout.Children.Remove(chooseLine); };
+            itemsLayout.Children.Add(chooseLine);
         }
-
         public void OnTextChanged(object sender, EventArgs e)
         {
             if((entry.Text).Length > maxInputLength)
@@ -42,7 +32,7 @@ namespace XamarinWorkTimer.Pages
 
         private void EntryInputCompleted(object sender, EventArgs e)
         {
-            manager.AddItem(entry.Text);
+            InputCompleted.Invoke(entry.Text, EventArgs.Empty);
             entry.Text = string.Empty;
         }
 

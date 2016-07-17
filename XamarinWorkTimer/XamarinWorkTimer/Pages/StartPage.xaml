@@ -12,12 +12,12 @@
       <Button x:Name="statisticButton"
               Text="Statistic"
               HorizontalOptions="FillAndExpand"
-              Clicked="StatisticButtonClicked"/>
+              Clicked="OnStatisticButtonClicked"/>
 
       <Button x:Name="chooseButton"
               Text="Choose Job"
               HorizontalOptions="FillAndExpand"
-              Clicked="ChooseButtonClicked"/>
+              Clicked="OnChooseButtonClicked"/>
     </StackLayout>
 
     <StackLayout Orientation="Horizontal"
@@ -49,13 +49,13 @@
               Text="pause"
               HorizontalOptions="FillAndExpand"
               IsEnabled ="false"
-              Clicked="PauseButtonClicked"/>
+              Clicked="OnPauseButtonClicked"/>
 
       <Button x:Name="stopButton"
               Text="stop"
               HorizontalOptions="FillAndExpand"
               IsEnabled ="false"
-              Clicked="StopButtonClicked"/>
+              Clicked="OnStopButtonClicked"/>
     </StackLayout>
     
   <Slider x:Name="slider"
