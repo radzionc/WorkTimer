@@ -130,6 +130,7 @@ namespace XamarinWorkTimer
             stopTimer = false;
             StartTime = DateTime.Now;
             preventInterval = 0;
+            startPage.TimerUI();
             OnStartPage();
         }
 

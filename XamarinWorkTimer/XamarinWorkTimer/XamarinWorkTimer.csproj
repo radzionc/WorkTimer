@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="CustomEventArgs.cs" />
     <Compile Include="DataBase\DatabaseSummary.cs" />
     <Compile Include="DataBase\DatabaseManager.cs" />
     <Compile Include="DataBase\DatabaseIntervals.cs" />
