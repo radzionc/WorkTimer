@@ -13,6 +13,8 @@ namespace XamarinWorkTimer
         public static string summaryDatabase = "summaryDatabase";
         public static string slider = "slider";
         public static string lastTime = "lastTime";
+        public static string stopTimer = "stopTimer";
+        public static string chooseLine = "chooseLine";
         public static string pause = "pause";
         public static string resume = "resume";
         public static string dateFormat = "dd/MM/yyyy";
@@ -21,9 +23,13 @@ namespace XamarinWorkTimer
         public static void PropertiesCheck()
         {
             if (!App.Current.Properties.ContainsKey(slider))
-                App.Current.Properties["slider"] = 45;
+                App.Current.Properties[slider] = 45;
             if (!App.Current.Properties.ContainsKey(lastTime))
-                App.Current.Properties["lastTime"] = DateTime.Now;
+                App.Current.Properties[lastTime] = DateTime.Now;
+            if (!App.Current.Properties.ContainsKey(stopTimer))
+                App.Current.Properties[stopTimer] = true;
+            if (!App.Current.Properties.ContainsKey(chooseLine))
+                App.Current.Properties[chooseLine] = null;
         }
         public static string FromSecondsToString(int seconds)
         {

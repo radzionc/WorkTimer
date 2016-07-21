@@ -45,12 +45,6 @@
                IsEnabled ="false"
                Padding="0, 20, 0, 0">
 
-      <Button x:Name="pauseButton"
-              Text="pause"
-              HorizontalOptions="FillAndExpand"
-              IsEnabled ="false"
-              Clicked="OnPauseButtonClicked"/>
-
       <Button x:Name="stopButton"
               Text="stop"
               HorizontalOptions="FillAndExpand"

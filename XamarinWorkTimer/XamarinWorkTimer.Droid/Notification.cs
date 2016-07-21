@@ -12,7 +12,6 @@ namespace XamarinWorkTimer.Droid
     {
         public void NotifaicationTime(long time)
         {
-            
         }
     }
 }

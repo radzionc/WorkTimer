@@ -18,6 +18,7 @@ namespace XamarinWorkTimer
         DateTime PauseTime;
         int preventInterval;
         bool stopTimer = true;
+        bool stopEternalTimer = false;
         public bool InStartPage => MainPage == startPage;
         public App()
         {
@@ -41,10 +42,12 @@ namespace XamarinWorkTimer
             startPage.PauseButtonClicked += Pause;
 
             Device.StartTimer(TimeSpan.FromSeconds(0.5), EternalTimer);
+            
         }
 
         private bool EternalTimer()
         {
+            if (stopEternalTimer) return false;
             LookForMidnight();
             if (stopTimer == false)
             {
@@ -158,10 +161,21 @@ namespace XamarinWorkTimer
 
         protected override void OnSleep()
         {
+            stopEternalTimer = true;
         }
 
         protected override void OnResume()
         {
+            if (stopTimer == true)
+            {
+                Properties[gf.stopTimer] = true;
+                Properties[gf.chooseLine] = null;
+            }
+            else
+            {
+                Properties[gf.stopTimer] = false;
+                Properties[gf.chooseLine] = chooseLine;
+            }
         }
     }
 }
