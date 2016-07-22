@@ -15,16 +15,22 @@ namespace XamarinWorkTimer
         ChooseLine chooseLine;
 
         DateTime StartTime;
-        DateTime PauseTime;
+
         int preventInterval;
         bool stopTimer = true;
-        bool stopEternalTimer = false;
+        bool stopTick = false;
+        int period;
         public bool InStartPage => MainPage == startPage;
         public App()
         {
-            gf.PropertiesCheck();
+            if (!Properties.ContainsKey(gf.slider))
+                Properties[gf.slider] = 45;
+            period = (int)Properties[gf.slider] * 60;
+            if (!Properties.ContainsKey(gf.lastTime))
+                Properties[gf.lastTime] = DateTime.Now;
+
             databaseManager = new DatabaseManager();
-            startPage = new StartPage();
+            startPage = new StartPage(databaseManager.SummaryTime(), (int)Properties[gf.slider]);
             choosePage = new ChoosePage();
             MainPage = startPage;
             LookForMidnight();
@@ -36,42 +42,42 @@ namespace XamarinWorkTimer
                 AddItem((string)sender);
             };
 
-            startPage.SummaryTime = databaseManager.SummaryTime();
             startPage.ChooseButtonClicked += OnChoosePage;
             startPage.StopButtonClicked += Stop;
-            startPage.PauseButtonClicked += Pause;
-
-            Device.StartTimer(TimeSpan.FromSeconds(0.5), EternalTimer);
-            
+            startPage.SliderValueChanged += (object sender, EventArgs args) => 
+            {
+                Properties[gf.slider] = (int)sender;
+                period = (int)sender * 60;
+            };
         }
 
-        private bool EternalTimer()
+        bool Tick()
         {
-            if (stopEternalTimer) return false;
+            if (stopTick) return false;
             LookForMidnight();
-            if (stopTimer == false)
+
+            if (!stopTimer)
             {
                 int interval = (int)(DateTime.Now - StartTime).TotalSeconds;
                 int delay = interval - preventInterval;
+                int leftTime = period - interval;
                 if (delay > 0)
                 {
-                    if (startPage.LeftTime <= delay)
+                    System.Diagnostics.Debug.WriteLine("\n\n\n\n" + delay.ToString() + "\n\n\n\n");
+                    if (leftTime <= 0)
                     {
-                        delay = startPage.LeftTime;
+                        delay = period - preventInterval;
                         Stop(null, EventArgs.Empty);
                     }
                     else
+                    {
                         preventInterval = interval;
-
-                    databaseManager.UpdateItem(chooseLine.Name, delay);
-
-                    chooseLine.Time += delay;
-                    startPage.SummaryTime += delay;
-                    startPage.LeftTime -= delay;
+                        startPage.updateUI(true, databaseManager.SummaryTime(), leftTime);
+                    }
+                    databaseManager.UpdateItem(chooseLine.Name, delay);                    
                 }
             }
-
-            App.Current.Properties[gf.lastTime] = DateTime.Now;
+            
             return true;
         }
 
@@ -79,35 +85,26 @@ namespace XamarinWorkTimer
         {
             preventInterval = 0;
             stopTimer = true;
-            startPage.NoTimerUI();
-        }
-
-        void Pause(object sender, EventArgs args)
-        {
-            stopTimer = !stopTimer;
-            if (stopTimer)
-                PauseTime = DateTime.Now;
-            else
-                StartTime += DateTime.Now - PauseTime;
+            startPage.updateUI(false, databaseManager.SummaryTime(), period);
         }
 
         public event EventHandler Midnight;
 
         private void LookForMidnight()
         {
-            if (((DateTime)App.Current.Properties[gf.lastTime]).Date != DateTime.Today)
+            if (((DateTime)Properties[gf.lastTime]).Date != DateTime.Today)
             {
-                databaseManager.AddSumary(new DatabaseSummary
-                {
-                    Date = ((DateTime)App.Current.Properties[gf.lastTime]).ToString(gf.dateFormat),
-                    Summary = databaseManager.SummaryTime()
-                });
+                //databaseManager.AddSumary(new DatabaseSummary
+                //{
+                //    Date = ((DateTime)App.Current.Properties[gf.lastTime]).ToString(gf.dateFormat),
+                //    Summary = databaseManager.SummaryTime()
+                //});
                 databaseManager.cleanInterval();
                 databaseManager.CleanTime();
 
-                startPage.SummaryTime = 0;
                 Midnight?.Invoke(null, EventArgs.Empty);
             }
+            Properties[gf.lastTime] = DateTime.Now;
         }
 
         public void AddItem(string name)
@@ -124,6 +121,7 @@ namespace XamarinWorkTimer
 
         public void OnStartPage()
         {
+            startPage.updateUI(!stopTimer, databaseManager.SummaryTime(), period);
             MainPage = startPage;
         }
 
@@ -133,12 +131,13 @@ namespace XamarinWorkTimer
             stopTimer = false;
             StartTime = DateTime.Now;
             preventInterval = 0;
-            startPage.TimerUI();
             OnStartPage();
         }
 
         public void OnChoosePage(object sender, EventArgs args)
         {
+            if(chooseLine != null)
+                chooseLine.Time = databaseManager.GetItem(chooseLine.Name).Time;
             MainPage = choosePage;
         }
 
@@ -151,31 +150,23 @@ namespace XamarinWorkTimer
             choosePage.AddLine(line);
         }
 
-
-
-
-
         protected override void OnStart()
         {
+            System.Diagnostics.Debug.WriteLine("Start");
         }
 
         protected override void OnSleep()
         {
-            stopEternalTimer = true;
+            stopTick = true;
+            System.Diagnostics.Debug.WriteLine("Sleep");
         }
 
         protected override void OnResume()
         {
-            if (stopTimer == true)
-            {
-                Properties[gf.stopTimer] = true;
-                Properties[gf.chooseLine] = null;
-            }
-            else
-            {
-                Properties[gf.stopTimer] = false;
-                Properties[gf.chooseLine] = chooseLine;
-            }
+            stopTick = false;
+            
+            Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
+            System.Diagnostics.Debug.WriteLine("Resume");
         }
     }
 }

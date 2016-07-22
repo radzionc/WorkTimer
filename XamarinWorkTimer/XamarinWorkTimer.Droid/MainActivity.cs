@@ -26,6 +26,8 @@ namespace XamarinWorkTimer.Droid
         {
             if (app.InStartPage)
                 base.OnBackPressed();
+            else
+                app.OnStartPage();
         }
     }
 

@@ -32,17 +32,16 @@ namespace XamarinWorkTimer.Pages
                 statisticButton.IsEnabled = true;
                 slider.IsEnabled = true;
                 stopButton.IsEnabled = false;
-                LeftTime = (int)slider.Value * 60;
             }
             summaryTime.Text = gf.FromSecondsToString(summary);
             leftTime.Text = gf.FromSecondsToString(left);
         }
 
-        public StartPage(bool timer, int summary, int sliderValue)
+        public StartPage(int summary, int sliderValue)
         {
             InitializeComponent();
             slider.Value = sliderValue;
-            updateUI(timer, summary, sliderValue * 60);   
+            updateUI(false, summary, sliderValue * 60);   
         }
 
         public void OnStatisticButtonClicked(object sender, EventArgs args)
@@ -62,7 +61,7 @@ namespace XamarinWorkTimer.Pages
 
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
-            SliderValueChanged.Invoke((int)slider.Value, EventArgs.Empty);
+            SliderValueChanged?.Invoke((int)slider.Value, EventArgs.Empty);
         }
         
     }
