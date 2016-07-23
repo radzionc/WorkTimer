@@ -24,9 +24,7 @@ namespace XamarinWorkTimer.Droid
 
         public override void OnBackPressed()
         {
-            if (app.InStartPage)
-                base.OnBackPressed();
-            else
+            if (!app.InStartPage)
                 app.OnStartPage();
         }
     }

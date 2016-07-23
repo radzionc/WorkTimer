@@ -16,7 +16,7 @@ namespace XamarinWorkTimer
 
         DateTime StartTime;
 
-        int preventInterval;
+        int preventInterval = 0;
         bool stopTimer = true;
         bool stopTick = false;
         int period;
@@ -49,6 +49,8 @@ namespace XamarinWorkTimer
                 Properties[gf.slider] = (int)sender;
                 period = (int)sender * 60;
             };
+
+            Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
         }
 
         bool Tick()
@@ -67,17 +69,18 @@ namespace XamarinWorkTimer
                     if (leftTime <= 0)
                     {
                         delay = period - preventInterval;
+                        databaseManager.UpdateItem(chooseLine.Name, delay);
                         Stop(null, EventArgs.Empty);
                     }
                     else
                     {
                         preventInterval = interval;
+                        databaseManager.UpdateItem(chooseLine.Name, delay);
                         startPage.updateUI(true, databaseManager.SummaryTime(), leftTime);
                     }
-                    databaseManager.UpdateItem(chooseLine.Name, delay);                    
+                                      
                 }
             }
-            
             return true;
         }
 
@@ -121,7 +124,6 @@ namespace XamarinWorkTimer
 
         public void OnStartPage()
         {
-            startPage.updateUI(!stopTimer, databaseManager.SummaryTime(), period);
             MainPage = startPage;
         }
 
@@ -164,8 +166,8 @@ namespace XamarinWorkTimer
         protected override void OnResume()
         {
             stopTick = false;
-            
-            Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
+
+            Tick(); Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
             System.Diagnostics.Debug.WriteLine("Resume");
         }
     }
