@@ -133,6 +133,7 @@ namespace XamarinWorkTimer
             stopTimer = false;
             StartTime = DateTime.Now;
             preventInterval = 0;
+            DependencyService.Get<IReminderService>().Remind(period, "Got it!", "You finish " + chooseLine.Name + "!");
             OnStartPage();
         }
 

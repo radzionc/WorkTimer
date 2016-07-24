@@ -62,6 +62,7 @@ namespace XamarinWorkTimer.Pages
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
             SliderValueChanged?.Invoke((int)slider.Value, EventArgs.Empty);
+            leftTime.Text = gf.FromSecondsToString((int)slider.Value * 60);
         }
         
     }

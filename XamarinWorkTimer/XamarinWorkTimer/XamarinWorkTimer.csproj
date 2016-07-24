@@ -40,8 +40,8 @@
     <Compile Include="DataBase\DatabaseManager.cs" />
     <Compile Include="DataBase\DatabaseIntervals.cs" />
     <Compile Include="gf.cs" />
-    <Compile Include="INotification.cs" />
-    <Compile Include="ISQLite.cs" />
+    <Compile Include="interfaces\IReminderService.cs" />
+    <Compile Include="interfaces\ISQLite.cs" />
     <Compile Include="Pages\ChoosePage.xaml.cs">
       <DependentUpon>ChoosePage.xaml</DependentUpon>
     </Compile>

@@ -1,11 +1,10 @@
 using System;
 using XamarinWorkTimer;
 using Xamarin.Forms;
-using XamarinWorkTimer.Droid;
 using System.IO;
 using SQLite;
 
-[assembly: Dependency(typeof(SQLite_Android))]
+[assembly: Dependency(typeof(XamarinWorkTimer.Droid.SQLite_Android))]
 
 namespace XamarinWorkTimer.Droid
 {
