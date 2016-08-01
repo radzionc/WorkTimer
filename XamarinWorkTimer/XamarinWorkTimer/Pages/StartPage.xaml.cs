@@ -12,7 +12,7 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StartPage : ContentPage
     {
-        public event EventHandler StatisticButtonClicked;
+        //public event EventHandler StatisticButtonClicked;
         public event EventHandler ChooseButtonClicked;
         public event EventHandler StopButtonClicked;
         public event EventHandler SliderValueChanged;
@@ -46,7 +46,7 @@ namespace XamarinWorkTimer.Pages
 
         public void OnStatisticButtonClicked(object sender, EventArgs args)
         {
-            StatisticButtonClicked?.Invoke(null, EventArgs.Empty);
+            App.Current.MainPage = new StatisticPage();
         }
                     
         public void OnChooseButtonClicked(object sender, EventArgs args)

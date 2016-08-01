@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using XamarinWorkTimer.Pages;
 using XamarinWorkTimer.Pages.Elements;
+using XamarinWorkTimer.DataBase;
 
 [assembly: Dependency(typeof(XamarinWorkTimer.App))]
 
@@ -9,12 +10,16 @@ namespace XamarinWorkTimer
 {
     public class App : Application
     {
-        DatabaseManager databaseManager;
+        ItemDB itemDB = new ItemDB(gf.database);
+        DB<Interval> intervalDB = new DB<Interval>(gf.intervalsDatabase);
+        DB<Summary> summaryDB = new DB<Summary>(gf.summaryDatabase);
         StartPage startPage;
         ChoosePage choosePage;
         ChooseLine chooseLine;
 
-        DateTime StartTime;
+        DateTime startTime;
+        Interval interval;
+        Item item;
 
         int preventInterval = 0;
         bool stopTimer = true;
@@ -28,14 +33,13 @@ namespace XamarinWorkTimer
             period = (int)Properties[gf.slider] * 60;
             if (!Properties.ContainsKey(gf.lastTime))
                 Properties[gf.lastTime] = DateTime.Now;
-
-            databaseManager = new DatabaseManager();
-            startPage = new StartPage(databaseManager.SummaryTime(), (int)Properties[gf.slider]);
+            
+            LookForMidnight();
+            startPage = new StartPage(itemDB.Sum(), (int)Properties[gf.slider]);
             choosePage = new ChoosePage();
             MainPage = startPage;
-            LookForMidnight();
 
-            foreach (DatabaseItem item in databaseManager.GetItems())
+            foreach (Item item in itemDB.GetAll())
                 AddChooseLine(item.Name, item.Time);
             choosePage.InputCompleted += (object sender, EventArgs args) =>
             {
@@ -60,23 +64,23 @@ namespace XamarinWorkTimer
 
             if (!stopTimer)
             {
-                int interval = (int)(DateTime.Now - StartTime).TotalSeconds;
-                int delay = interval - preventInterval;
-                int leftTime = period - interval;
+                int currentInterval = (int)(DateTime.Now - startTime).TotalSeconds;
+                int delay = currentInterval - preventInterval;
+                int leftTime = period - currentInterval;
                 if (delay > 0)
                 {
-                    System.Diagnostics.Debug.WriteLine("\n\n\n\n" + delay.ToString() + "\n\n\n\n");
                     if (leftTime <= 0)
-                    {
                         delay = period - preventInterval;
-                        databaseManager.UpdateItem(chooseLine.Name, delay);
-                        Stop(null, EventArgs.Empty);
-                    }
-                    else
+
+                    item.Time += delay;
+                    itemDB.Update(item);
+                    interval.Sum += delay;
+                    intervalDB.Update(interval);
+
+                    if (leftTime > 0)
                     {
-                        preventInterval = interval;
-                        databaseManager.UpdateItem(chooseLine.Name, delay);
-                        startPage.updateUI(true, databaseManager.SummaryTime(), leftTime);
+                        preventInterval = currentInterval;
+                        startPage.updateUI(true, itemDB.Sum(), leftTime);
                     }
                                       
                 }
@@ -88,7 +92,7 @@ namespace XamarinWorkTimer
         {
             preventInterval = 0;
             stopTimer = true;
-            startPage.updateUI(false, databaseManager.SummaryTime(), period);
+            startPage.updateUI(false, itemDB.Sum(), period);
         }
 
         public event EventHandler Midnight;
@@ -97,13 +101,21 @@ namespace XamarinWorkTimer
         {
             if (((DateTime)Properties[gf.lastTime]).Date != DateTime.Today)
             {
-                //databaseManager.AddSumary(new DatabaseSummary
-                //{
-                //    Date = ((DateTime)App.Current.Properties[gf.lastTime]).ToString(gf.dateFormat),
-                //    Summary = databaseManager.SummaryTime()
-                //});
-                databaseManager.cleanInterval();
-                databaseManager.CleanTime();
+                int sum = itemDB.Sum();
+                string date = ((DateTime)Properties[gf.lastTime]).ToString(gf.dateFormat);
+                if (summaryDB.Contain(date))
+                    summaryDB.Delete(date);
+                summaryDB.Add(new Summary { Date = date, Sum = sum});
+
+                intervalDB.DeleteAll();
+                if(stopTimer == false)
+                {
+                    item.Time = 0;
+                    interval.Start = DateTime.Now.ToString(gf.timeFormat);
+                    interval.Name = item.Name;
+                    interval.Sum = 0;
+                }
+                itemDB.Clean();
 
                 Midnight?.Invoke(null, EventArgs.Empty);
             }
@@ -112,12 +124,9 @@ namespace XamarinWorkTimer
 
         public void AddItem(string name)
         {
-            if (!databaseManager.Contain(name))
+            if (!itemDB.Contain(name))
             {
-                databaseManager.AddItem(new DatabaseItem()
-                {
-                    Name = name,
-                });
+                itemDB.Add(new Item(){ Name = name });
                 AddChooseLine(name);
             }
         }
@@ -131,8 +140,16 @@ namespace XamarinWorkTimer
         {
             chooseLine = line;
             stopTimer = false;
-            StartTime = DateTime.Now;
+            startTime = DateTime.Now;
+
+            interval.Start = startTime.ToString(gf.timeFormat);
+            interval.Name = chooseLine.Name;
+            interval.Sum = 0;
+            intervalDB.Add(interval);
+
+            item = itemDB.Get(chooseLine.Name);
             preventInterval = 0;
+
             DependencyService.Get<IReminderService>().Remind(period, "Got it!", "You finish " + chooseLine.Name + "!");
             OnStartPage();
         }
@@ -140,7 +157,7 @@ namespace XamarinWorkTimer
         public void OnChoosePage(object sender, EventArgs args)
         {
             if(chooseLine != null)
-                chooseLine.Time = databaseManager.GetItem(chooseLine.Name).Time;
+                chooseLine.Time = itemDB.Get(chooseLine.Name).Time;
             MainPage = choosePage;
         }
 
@@ -148,20 +165,20 @@ namespace XamarinWorkTimer
         {
             ChooseLine line = new ChooseLine(name, time);
             line.StartButtonClick += delegate { FromChooseToStartPage(line); };
-            line.DeleteButtonClick += delegate { databaseManager.DeleteItem(line.Name); };
+            line.DeleteButtonClick += delegate { itemDB.Delete(line.Name); };
             Midnight += delegate { line.Time = 0; };
             choosePage.AddLine(line);
         }
 
         protected override void OnStart()
         {
-            System.Diagnostics.Debug.WriteLine("Start");
+            
         }
 
         protected override void OnSleep()
         {
             stopTick = true;
-            System.Diagnostics.Debug.WriteLine("Sleep");
+            
         }
 
         protected override void OnResume()

@@ -1,9 +1,6 @@
-using System;
-using Android.Support.V4.App;
 using Android.Content;
 using Android.App;
 using Xamarin.Forms;
-using Android.Graphics;
 using Android.OS;
 
 [assembly: Dependency(typeof(XamarinWorkTimer.Droid.AndroidReminderService))]
@@ -23,6 +20,11 @@ namespace XamarinWorkTimer.Droid
             AlarmManager alarmManager = (AlarmManager)Forms.Context.GetSystemService(Context.AlarmService);
 
             alarmManager.Set(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + seconds * 1000, pendingIntent);
+        }
+
+        public void CancelRemind()
+        {
+            
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinWorkTimer.Pages.StatisticPage">
+  <!--<ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness"
+                iOS="5, 25, 5, 5"
+                Android="5"
+                WinPhone="5" />
+  </ContentPage.Padding>-->
+  <StackLayout>
+    <Label Text="Today's Performance"
+           HorizontalTextAlignment="Center"
+           FontSize="large"/>
+  
+    <AbsoluteLayout x:Name="statisticLayout"
+                    Padding="5">
+      <BoxView x:Name="intervalChart"
+               AbsoluteLayout.LayoutBounds="0, 0, 350, 250" 
+               Color="Aqua"/>                 
+    </AbsoluteLayout>
+  </StackLayout>
+</ContentPage>
