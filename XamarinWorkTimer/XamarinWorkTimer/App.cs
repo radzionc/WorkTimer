@@ -167,7 +167,7 @@ namespace XamarinWorkTimer
         }
         public void OnStatisticPage(object sender, EventArgs args)
         {
-            MainPage = new StatisticPage();
+            MainPage = new StatisticPage(intervalDB.GetAll());
         }
 
         public void AddChooseLine(string name, int time = 0)

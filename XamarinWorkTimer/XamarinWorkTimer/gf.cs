@@ -15,8 +15,9 @@ namespace XamarinWorkTimer
         public static string lastTime = "lastTime";
         public static string dateFormat = "dd/MM/yyyy";
         public static string timeFormat = "hh/mm/ss";
+        public static int secondsInHour = 86400;
 
-        public static string FromSecondsToString(int seconds)
+        public static string strToSec(int seconds)
         {
             TimeSpan sec = TimeSpan.FromSeconds(seconds);
 
@@ -26,6 +27,12 @@ namespace XamarinWorkTimer
                 return "60:00";
             else
                 return sec.ToString(@"hh\:mm\:ss");
+        }
+        
+        public static int strToSec(string time)
+        {
+            string[] times = time.Split('/');
+            return int.Parse(times[0]) * 3600 + int.Parse(times[1]) * 60 + int.Parse(times[2]);
         }
     }
 }

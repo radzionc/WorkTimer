@@ -3,7 +3,7 @@ using SQLite;
 
 namespace XamarinWorkTimer
 {
-    struct Item
+    public struct Item
     {
         [PrimaryKey]
         public string NamePK { get; set; }

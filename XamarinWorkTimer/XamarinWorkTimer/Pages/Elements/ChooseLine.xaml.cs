@@ -24,7 +24,7 @@ namespace XamarinWorkTimer.Pages.Elements
                     deleteButton.BackgroundColor = Color.Transparent;
                     deleteButton.BorderColor = Color.Transparent;
                     deleteButton.IsEnabled = false;
-                    deleteButton.Text = g.FromSecondsToString(time);
+                    deleteButton.Text = g.strToSec(time);
                 }
                 else
                 {

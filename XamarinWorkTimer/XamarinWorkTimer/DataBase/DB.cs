@@ -15,7 +15,7 @@ namespace XamarinWorkTimer.DataBase
             database.CreateTable<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
             return (from i in database.Table<T>() select i).ToList();
         }

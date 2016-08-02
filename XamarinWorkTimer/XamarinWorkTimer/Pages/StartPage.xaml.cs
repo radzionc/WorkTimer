@@ -33,8 +33,8 @@ namespace XamarinWorkTimer.Pages
                 slider.IsEnabled = true;
                 stopButton.IsEnabled = false;
             }
-            summaryTime.Text = g.FromSecondsToString(summary);
-            leftTime.Text = g.FromSecondsToString(left);
+            summaryTime.Text = g.strToSec(summary);
+            leftTime.Text = g.strToSec(left);
         }
 
         public StartPage(int summary, int sliderValue)
@@ -62,7 +62,7 @@ namespace XamarinWorkTimer.Pages
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
             SliderValueChanged?.Invoke((int)slider.Value, EventArgs.Empty);
-            leftTime.Text = g.FromSecondsToString((int)slider.Value * 60);
+            leftTime.Text = g.strToSec((int)slider.Value * 60);
         }
         
     }
