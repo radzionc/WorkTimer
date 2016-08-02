@@ -40,7 +40,7 @@
     <Compile Include="DataBase\ItemDB.cs" />
     <Compile Include="DataBase\Summary.cs" />
     <Compile Include="DataBase\Interval.cs" />
-    <Compile Include="gf.cs" />
+    <Compile Include="g.cs" />
     <Compile Include="interfaces\IReminderService.cs" />
     <Compile Include="interfaces\ISQLite.cs" />
     <Compile Include="Pages\ChoosePage.xaml.cs">

@@ -18,6 +18,7 @@
     <Label x:Name="intervalLabel"
            AbsoluteLayout.LayoutFlags="All"
            AbsoluteLayout.LayoutBounds="0, .4, 1, .1"
+           VerticalTextAlignment="Center"
            FontSize="Medium"/>
   </AbsoluteLayout>
 </ContentPage>

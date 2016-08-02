@@ -18,9 +18,9 @@ namespace XamarinWorkTimer.Pages.Elements
         {
             _Interval = interval;
             Color = False;
-            int startTime = g.strToSec(interval.StartPK);
-            _Rectangle = new Rectangle((double)startTime/ g.secondsInHour, 0, (double)interval.Sum/ g.secondsInHour, 1);
-            Log = $"{interval.Name} : {interval.StartPK} - {g.strToSec((g.strToSec(interval.StartPK) + interval.Sum))} : {g.strToSec(interval.Sum)}";
+            int startTime = g.secToStr(interval.StartPK);
+            _Rectangle = new Rectangle((double)startTime/ g.secondsInDay, 0, (double)interval.Sum/ g.secondsInDay, 1);
+            Log = $"{interval.Name} : {interval.StartPK} - {g.strToSec((g.secToStr(interval.StartPK) + interval.Sum))} : {g.strToSec(interval.Sum)}";
         }
         public Rectangle _Rectangle { get; private set; }
         public Interval _Interval { get; private set; }
