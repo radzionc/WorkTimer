@@ -12,23 +12,27 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StatisticPage : ContentPage
     {
+        IntervalBox previous;
         public StatisticPage(List<Interval> intervals)
         {
             InitializeComponent();
             foreach (Interval interval in intervals)
             {
                 IntervalBox box = new IntervalBox(interval);
+
                 box.GestureRecognizers.Add(new TapGestureRecognizer()
                 {
                     Command = new Command(() =>
                     {
-                        box.Color = Color.Green;
+                        if (previous != null)
+                            previous.Choosen = false;
+                        box.Choosen = true;
                         intervalLabel.Text = box.Log;
+                        previous = box;
                     })
                 });
                 intervalLayout.Children.Add(box, box._Rectangle, AbsoluteLayoutFlags.All);
             }
-            //AbsoluteLayout a = new AbsoluteLayout();
         }
     }
 }
