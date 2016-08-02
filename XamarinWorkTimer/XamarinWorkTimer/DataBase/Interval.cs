@@ -6,7 +6,7 @@ namespace XamarinWorkTimer
     struct Interval
     {
         [PrimaryKey]
-        public string Start { get; set; }
+        public string StartPK { get; set; }
         public int Sum { get; set; }
         public string Name { get; set; }
     }

@@ -13,7 +13,7 @@ namespace XamarinWorkTimer.Pages
         public StatisticPage()
         {
             InitializeComponent();
-            AbsoluteLayout a = new AbsoluteLayout();
+            //AbsoluteLayout a = new AbsoluteLayout();
         }
     }
 }

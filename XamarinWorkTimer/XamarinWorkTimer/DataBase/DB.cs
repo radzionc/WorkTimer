@@ -35,12 +35,6 @@ namespace XamarinWorkTimer.DataBase
             database.Delete<T>(pk);
         }
 
-        public bool Contain(string pk)
-        {
-            T e = Get(pk);
-            return Get(pk).Equals(null)? false : true;
-        }
-
         public void Add(T instance)
         {
             database.Insert(instance);

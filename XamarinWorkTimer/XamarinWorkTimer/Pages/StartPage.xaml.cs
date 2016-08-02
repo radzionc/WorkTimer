@@ -12,7 +12,7 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StartPage : ContentPage
     {
-        //public event EventHandler StatisticButtonClicked;
+        public event EventHandler StatisticButtonClicked;
         public event EventHandler ChooseButtonClicked;
         public event EventHandler StopButtonClicked;
         public event EventHandler SliderValueChanged;
@@ -33,8 +33,8 @@ namespace XamarinWorkTimer.Pages
                 slider.IsEnabled = true;
                 stopButton.IsEnabled = false;
             }
-            summaryTime.Text = gf.FromSecondsToString(summary);
-            leftTime.Text = gf.FromSecondsToString(left);
+            summaryTime.Text = g.FromSecondsToString(summary);
+            leftTime.Text = g.FromSecondsToString(left);
         }
 
         public StartPage(int summary, int sliderValue)
@@ -46,7 +46,7 @@ namespace XamarinWorkTimer.Pages
 
         public void OnStatisticButtonClicked(object sender, EventArgs args)
         {
-            App.Current.MainPage = new StatisticPage();
+            StatisticButtonClicked?.Invoke(null, EventArgs.Empty);
         }
                     
         public void OnChooseButtonClicked(object sender, EventArgs args)
@@ -62,7 +62,7 @@ namespace XamarinWorkTimer.Pages
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
             SliderValueChanged?.Invoke((int)slider.Value, EventArgs.Empty);
-            leftTime.Text = gf.FromSecondsToString((int)slider.Value * 60);
+            leftTime.Text = g.FromSecondsToString((int)slider.Value * 60);
         }
         
     }

@@ -2,22 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinWorkTimer.Pages.StatisticPage">
-  <!--<ContentPage.Padding>
-    <OnPlatform x:TypeArguments="Thickness"
-                iOS="5, 25, 5, 5"
-                Android="5"
-                WinPhone="5" />
-  </ContentPage.Padding>-->
-  <StackLayout>
-    <Label Text="Today's Performance"
-           HorizontalTextAlignment="Center"
-           FontSize="large"/>
   
-    <AbsoluteLayout x:Name="statisticLayout"
-                    Padding="5">
-      <BoxView x:Name="intervalChart"
-               AbsoluteLayout.LayoutBounds="0, 0, 350, 250" 
-               Color="Aqua"/>                 
-    </AbsoluteLayout>
-  </StackLayout>
+  <AbsoluteLayout Padding="5">
+    <Label Text="Today's Performance"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds="0, 0, 1, .1"
+           HorizontalTextAlignment="Center"
+           FontSize="Large"/>
+  
+    <AbsoluteLayout x:Name="intervalLayout"
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0, .1, 1, .3"
+                    BackgroundColor="Aqua"/>
+    
+    <Label x:Name="intervalLabel"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds="0, .4, 1, .1"
+           FontSize="Large"/>
+  </AbsoluteLayout>
 </ContentPage>

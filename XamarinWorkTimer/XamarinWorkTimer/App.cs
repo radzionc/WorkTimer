@@ -10,9 +10,9 @@ namespace XamarinWorkTimer
 {
     public class App : Application
     {
-        ItemDB itemDB = new ItemDB(gf.database);
-        DB<Interval> intervalDB = new DB<Interval>(gf.intervalsDatabase);
-        DB<Summary> summaryDB = new DB<Summary>(gf.summaryDatabase);
+        ItemDB itemDB = new ItemDB(g.item);
+        DB<Interval> intervalDB = new DB<Interval>(g.interval);
+        DB<Sum> sumDB = new DB<Sum>(g.sum);
         StartPage startPage;
         ChoosePage choosePage;
         ChooseLine chooseLine;
@@ -26,31 +26,35 @@ namespace XamarinWorkTimer
         bool stopTick = false;
         int period;
         public bool InStartPage => MainPage == startPage;
+        void PropertiesChecking()
+        {
+            if (!Properties.ContainsKey(g.slider))
+                Properties[g.slider] = 46;
+            period = (int)Properties[g.slider] * 60;
+            if (!Properties.ContainsKey(g.lastTime))
+                Properties[g.lastTime] = DateTime.Now;
+        }
         public App()
         {
-            if (!Properties.ContainsKey(gf.slider))
-                Properties[gf.slider] = 45;
-            period = (int)Properties[gf.slider] * 60;
-            if (!Properties.ContainsKey(gf.lastTime))
-                Properties[gf.lastTime] = DateTime.Now;
-            
+            PropertiesChecking();
             LookForMidnight();
-            startPage = new StartPage(itemDB.Sum(), (int)Properties[gf.slider]);
+            startPage = new StartPage(itemDB.Sum(), (int)Properties[g.slider]);
             choosePage = new ChoosePage();
             MainPage = startPage;
 
             foreach (Item item in itemDB.GetAll())
-                AddChooseLine(item.Name, item.Time);
+                AddChooseLine(item.NamePK, item.Time);
             choosePage.InputCompleted += (object sender, EventArgs args) =>
             {
                 AddItem((string)sender);
             };
 
             startPage.ChooseButtonClicked += OnChoosePage;
+            startPage.StatisticButtonClicked += OnStatisticPage;
             startPage.StopButtonClicked += Stop;
             startPage.SliderValueChanged += (object sender, EventArgs args) => 
             {
-                Properties[gf.slider] = (int)sender;
+                Properties[g.slider] = (int)sender;
                 period = (int)sender * 60;
             };
 
@@ -80,7 +84,7 @@ namespace XamarinWorkTimer
                     if (leftTime > 0)
                     {
                         preventInterval = currentInterval;
-                        startPage.updateUI(true, itemDB.Sum(), leftTime);
+                        startPage.updateUI(!stopTimer, itemDB.Sum(), leftTime);
                     }
                                       
                 }
@@ -99,40 +103,41 @@ namespace XamarinWorkTimer
 
         private void LookForMidnight()
         {
-            if (((DateTime)Properties[gf.lastTime]).Date != DateTime.Today)
+            if (((DateTime)Properties[g.lastTime]).Date != DateTime.Today)
             {
                 int sum = itemDB.Sum();
-                string date = ((DateTime)Properties[gf.lastTime]).ToString(gf.dateFormat);
-                if (summaryDB.Contain(date))
-                    summaryDB.Delete(date);
-                summaryDB.Add(new Summary { Date = date, Sum = sum});
+                string date = ((DateTime)Properties[g.lastTime]).ToString(g.dateFormat);
+                if (sumDB.Get(date).DatePK != null)
+                    sumDB.Delete(date);
+                sumDB.Add(new Sum { DatePK = date, Value = sum});
 
                 intervalDB.DeleteAll();
                 if(stopTimer == false)
                 {
                     item.Time = 0;
-                    interval.Start = DateTime.Now.ToString(gf.timeFormat);
-                    interval.Name = item.Name;
+                    interval.StartPK = DateTime.Now.ToString(g.timeFormat);
+                    interval.Name = item.NamePK;
                     interval.Sum = 0;
                 }
                 itemDB.Clean();
 
                 Midnight?.Invoke(null, EventArgs.Empty);
             }
-            Properties[gf.lastTime] = DateTime.Now;
+            Properties[g.lastTime] = DateTime.Now;
         }
 
         public void AddItem(string name)
         {
-            if (!itemDB.Contain(name))
+            if (itemDB.Get(name).NamePK == null)
             {
-                itemDB.Add(new Item(){ Name = name });
+                itemDB.Add(new Item(){ NamePK = name });
                 AddChooseLine(name);
             }
         }
 
         public void OnStartPage()
         {
+            startPage.updateUI(!stopTimer, itemDB.Sum(), (int)Properties[g.slider]);
             MainPage = startPage;
         }
 
@@ -142,7 +147,7 @@ namespace XamarinWorkTimer
             stopTimer = false;
             startTime = DateTime.Now;
 
-            interval.Start = startTime.ToString(gf.timeFormat);
+            interval.StartPK = startTime.ToString(g.timeFormat);
             interval.Name = chooseLine.Name;
             interval.Sum = 0;
             intervalDB.Add(interval);
@@ -159,6 +164,10 @@ namespace XamarinWorkTimer
             if(chooseLine != null)
                 chooseLine.Time = itemDB.Get(chooseLine.Name).Time;
             MainPage = choosePage;
+        }
+        public void OnStatisticPage(object sender, EventArgs args)
+        {
+            MainPage = new StatisticPage();
         }
 
         public void AddChooseLine(string name, int time = 0)

@@ -6,7 +6,7 @@ namespace XamarinWorkTimer
     struct Item
     {
         [PrimaryKey]
-        public string Name { get; set; }
+        public string NamePK { get; set; }
         public int Time { get; set; }
     }
 }
