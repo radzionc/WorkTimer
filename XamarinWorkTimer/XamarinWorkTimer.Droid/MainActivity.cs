@@ -27,6 +27,13 @@ namespace XamarinWorkTimer.Droid
             if (!app.InStartPage)
                 app.OnStartPage();
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            AndroidReminderService.pendingIntent?.Cancel();
+        }
     }
 
 }

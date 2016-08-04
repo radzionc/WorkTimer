@@ -2,22 +2,23 @@ using Android.Content;
 using Android.App;
 using Android.Support.V4.App;
 using Android.Graphics;
+using Android.Support.V4.Content;
 
 namespace XamarinWorkTimer.Droid
 {
     [BroadcastReceiver]
-    public class AlarmReceiver : BroadcastReceiver
+    public class AlarmReceiver : WakefulBroadcastReceiver
     {
-        NotificationManager manager;
         public override void OnReceive(Context context, Intent intent)
         {
+            StartWakefulService(context, intent);
 
             string message = intent.GetStringExtra("message");
             string title = intent.GetStringExtra("title");
 
             Intent notIntent = new Intent(context, typeof(MainActivity));
             PendingIntent contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
-            manager = NotificationManager.FromContext(context);
+            NotificationManager manager = NotificationManager.FromContext(context);
             var style = new Notification.BigTextStyle();
             style.BigText(message);
 
@@ -42,11 +43,6 @@ namespace XamarinWorkTimer.Droid
 
             var notification = builder.Build();
             manager.Notify(0, notification);
-        }
-
-        public void Cancel()
-        {
-            manager?.CancelAll();
         }
     }
 }

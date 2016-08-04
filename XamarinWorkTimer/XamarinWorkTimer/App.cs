@@ -100,6 +100,7 @@ namespace XamarinWorkTimer
             preventInterval = 0;
             stopTimer = true;
             startPage.updateUI(false, itemDB.Sum(), period);
+            DependencyService.Get<IReminderService>().Cancel();
         }
 
         public event EventHandler Midnight;
