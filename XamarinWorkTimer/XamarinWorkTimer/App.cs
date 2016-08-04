@@ -76,6 +76,7 @@ namespace XamarinWorkTimer
                     if (leftTime <= 0)
                         delay = period - preventInterval;
 
+                    System.Diagnostics.Debug.WriteLine($"!!!\n current = {currentInterval}\n delay = {delay}\n leftTime = {leftTime}\n!!!");
                     item.Time += delay;
                     itemDB.Update(item);
                     interval.Sum += delay;
@@ -86,6 +87,8 @@ namespace XamarinWorkTimer
                         preventInterval = currentInterval;
                         startPage.updateUI(!stopTimer, itemDB.Sum(), leftTime);
                     }
+                    else Stop(null, EventArgs.Empty);
+
                                       
                 }
             }
@@ -137,7 +140,7 @@ namespace XamarinWorkTimer
 
         public void OnStartPage()
         {
-            startPage.updateUI(!stopTimer, itemDB.Sum(), (int)Properties[g.slider]);
+            startPage.updateUI(!stopTimer, itemDB.Sum(), (int)Properties[g.slider] * 60);
             MainPage = startPage;
         }
 
@@ -187,7 +190,6 @@ namespace XamarinWorkTimer
         protected override void OnSleep()
         {
             stopTick = true;
-            
         }
 
         protected override void OnResume()
