@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinWorkTimer.App">
+  <Application.Resources>
+    <ResourceDictionary>
+      <Style TargetType="ContentPage">
+        <Setter Property="Padding" Value="5"/>
+      </Style>
+
+      <Style TargetType="Label">
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
+        <Setter Property="FontSize" Value="Large" />
+        <Setter Property="TextColor" Value="Teal" />
+      </Style>
+
+      <Style TargetType="Button">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+        <Setter Property="BorderColor" Value="Lime" />
+        <Setter Property="BorderRadius" Value="5" />
+        <Setter Property="BorderWidth" Value="5" />
+        <Setter Property="TextColor" Value="Teal" />
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

@@ -1,61 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:elements="clr-namespace:XamarinWorkTimer.Pages.Elements"
              x:Class="XamarinWorkTimer.Pages.StartPage">
 
-  <StackLayout>
-    <StackLayout Orientation="Horizontal"
-                 VerticalOptions="Start"
-                 HorizontalOptions="FillAndExpand"
-                 Padding="0, 20, 0, 0">
-
-      <Button x:Name="statisticButton"
-              Text="Statistic"
-              HorizontalOptions="FillAndExpand"
-              Clicked="OnStatisticButtonClicked"/>
-
-      <Button x:Name="chooseButton"
-              Text="Choose Job"
-              HorizontalOptions="FillAndExpand"
-              Clicked="OnChooseButtonClicked"/>
-    </StackLayout>
-
-    <StackLayout Orientation="Horizontal"
-                 VerticalOptions="Start">
-      
-      <Label x:Name="constSummaryTime"
-             Text="Summary time"
-             FontSize="Large"/>
-
-      <Label x:Name="summaryTime"
-             FontSize="Large"/>
-    </StackLayout>
-     
-    <StackLayout VerticalOptions="Center"
-                 Padding ="0, 50, 0, 50">
-      <Label x:Name="leftTime"
-             FontSize="Large"
-             VerticalTextAlignment="Center"
-             HorizontalTextAlignment="Center"/>
-    </StackLayout>
-
-  <StackLayout Orientation="Horizontal"
-               VerticalOptions="Start"
-               HorizontalOptions="FillAndExpand"
-               IsEnabled ="false"
-               Padding="0, 20, 0, 0">
-
-      <Button x:Name="stopButton"
-              Text="stop"
-              HorizontalOptions="FillAndExpand"
-              IsEnabled ="false"
-              Clicked="OnStopButtonClicked"/>
-    </StackLayout>
+  <AbsoluteLayout Padding="5">
+    <Button x:Name="statisticButton"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0, 0, 1, .1"
+            Text="Statistic"
+            Clicked="OnStatisticButtonClicked"/>
     
-  <Slider x:Name="slider"
-          Maximum="60"
-          Minimum="1"
-          ValueChanged="OnSliderValueChanged"/>
+    <Label x:Name="summaryTime"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds="0, .1, 1, .1"/>
+    
+    <elements:CircularText x:Name="circularText"
+                  AbsoluteLayout.LayoutFlags="All"
+                  AbsoluteLayout.LayoutBounds="0, .25, 1, .4"/>
+    
+    <Label x:Name="leftTime"
+           FontSize="36"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds="0, .3, 1, .2"/>
+    
+    <Slider x:Name="slider"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0, .6, 1, .1"
+            Maximum="60"
+            Minimum="1"
+            ValueChanged="OnSliderValueChanged"/>
+    
+    <Button x:Name="stopButton"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0, .7, 1, .1"
+            Text="stop"
+            IsEnabled ="false"
+            Clicked="OnStopButtonClicked"/>
+    
+    <Button x:Name="chooseButton"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0, .8, 1, .1"
+            Text="Choose Job"
+            Clicked="OnChooseButtonClicked"/>
 
-  </StackLayout>
+  </AbsoluteLayout>
 </ContentPage>

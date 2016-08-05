@@ -35,7 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataBase\DB.cs" />
     <Compile Include="DataBase\ItemDB.cs" />
     <Compile Include="DataBase\Summary.cs" />
@@ -50,6 +52,7 @@
     <Compile Include="Pages\Elements\ChooseLine.xaml.cs">
       <DependentUpon>ChooseLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Elements\CircularText.cs" />
     <Compile Include="Pages\Elements\IntervalBox.cs" />
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
@@ -108,6 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\StatisticPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

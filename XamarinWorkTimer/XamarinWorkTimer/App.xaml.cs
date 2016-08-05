@@ -8,7 +8,7 @@ using XamarinWorkTimer.DataBase;
 
 namespace XamarinWorkTimer
 {
-    public class App : Application
+    public partial class App : Application
     {
         ItemDB itemDB = new ItemDB(g.item);
         DB<Interval> intervalDB = new DB<Interval>(g.interval);
@@ -36,6 +36,9 @@ namespace XamarinWorkTimer
         }
         public App()
         {
+
+            InitializeComponent();
+
             PropertiesChecking();
             LookForMidnight();
             startPage = new StartPage(itemDB.Sum(), (int)Properties[g.slider]);
@@ -52,7 +55,7 @@ namespace XamarinWorkTimer
             startPage.ChooseButtonClicked += OnChoosePage;
             startPage.StatisticButtonClicked += OnStatisticPage;
             startPage.StopButtonClicked += Stop;
-            startPage.SliderValueChanged += (object sender, EventArgs args) => 
+            startPage.SliderValueChanged += (object sender, EventArgs args) =>
             {
                 Properties[g.slider] = (int)sender;
                 period = (int)sender * 60;
@@ -89,7 +92,7 @@ namespace XamarinWorkTimer
                     }
                     else Stop(null, EventArgs.Empty);
 
-                                      
+
                 }
             }
             return true;
@@ -113,10 +116,10 @@ namespace XamarinWorkTimer
                 string date = ((DateTime)Properties[g.lastTime]).ToString(g.dateFormat);
                 if (sumDB.Get(date).DatePK != null)
                     sumDB.Delete(date);
-                sumDB.Add(new Sum { DatePK = date, Value = sum});
+                sumDB.Add(new Sum { DatePK = date, Value = sum });
 
                 intervalDB.DeleteAll();
-                if(stopTimer == false)
+                if (stopTimer == false)
                 {
                     item.Time = 0;
                     interval.StartPK = DateTime.Now.ToString(g.timeFormat);
@@ -134,7 +137,7 @@ namespace XamarinWorkTimer
         {
             if (itemDB.Get(name).NamePK == null)
             {
-                itemDB.Add(new Item(){ NamePK = name });
+                itemDB.Add(new Item() { NamePK = name });
                 AddChooseLine(name);
             }
         }
@@ -165,7 +168,7 @@ namespace XamarinWorkTimer
 
         public void OnChoosePage(object sender, EventArgs args)
         {
-            if(chooseLine != null)
+            if (chooseLine != null)
                 chooseLine.Time = itemDB.Get(chooseLine.Name).Time;
             MainPage = choosePage;
         }
@@ -185,7 +188,7 @@ namespace XamarinWorkTimer
 
         protected override void OnStart()
         {
-            
+
         }
 
         protected override void OnSleep()

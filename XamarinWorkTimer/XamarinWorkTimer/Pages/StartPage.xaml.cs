@@ -25,6 +25,9 @@ namespace XamarinWorkTimer.Pages
                 statisticButton.IsEnabled = false;
                 slider.IsEnabled = false;
                 stopButton.IsEnabled = true;
+                double complete = ((int)slider.Value - (double)left / 60) / (int)slider.Value;
+                stopButton.Text = slider.Value.ToString() + " : " + left.ToString() + " : " + complete.ToString();
+                circularText.Update(complete);
             }
             else
             {
@@ -32,6 +35,7 @@ namespace XamarinWorkTimer.Pages
                 statisticButton.IsEnabled = true;
                 slider.IsEnabled = true;
                 stopButton.IsEnabled = false;
+                circularText.Update(1);
             }
             summaryTime.Text = g.strToSec(summary);
             leftTime.Text = g.strToSec(left);
