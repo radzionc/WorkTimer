@@ -11,6 +11,8 @@ namespace XamarinWorkTimer
         public static string item = "item";
         public static string interval = "interval";
         public static string sum = "sum";
+        public static string stop = "Stop";
+        public static string choose = "Choose Job?";
         public static string slider = "slider";
         public static string lastTime = "lastTime";
         public static string dateFormat = "dd:MM:yyyy";
@@ -27,6 +29,11 @@ namespace XamarinWorkTimer
                 return "60:00";
             else
                 return sec.ToString(@"hh\:mm\:ss");
+        }
+        public static int period
+        {
+            get { return (int)App.Current.Properties[slider]; }
+            set { App.Current.Properties[slider] = value; }
         }
         
         public static int secToStr(string time)

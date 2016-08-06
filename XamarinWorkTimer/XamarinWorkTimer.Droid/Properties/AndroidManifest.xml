@@ -3,5 +3,5 @@
 	<uses-sdk android:minSdkVersion="15" />
 	<uses-permission android:name="android.permission.DEVICE_POWER" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<application android:label="$safeprojectname$" android:theme="@android:style/Theme.Material.Light.DarkActionBar"></application>
+	<application android:label="$safeprojectname$" android:theme="@android:style/Theme.Material"></application>
 </manifest>

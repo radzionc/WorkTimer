@@ -5,20 +5,17 @@
              x:Class="XamarinWorkTimer.Pages.StartPage">
 
   <AbsoluteLayout Padding="5">
-    <Button x:Name="statisticButton"
-            AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0, 0, 1, .1"
-            Text="Statistic"
-            Clicked="OnStatisticButtonClicked"/>
-    
-    <Label x:Name="summaryTime"
+
+    <Label x:Name="statisticLabel"
+           Text="To statistic"
+           FontSize="36"
            AbsoluteLayout.LayoutFlags="All"
-           AbsoluteLayout.LayoutBounds="0, .1, 1, .1"/>
+           AbsoluteLayout.LayoutBounds="0, 0, 1, .15"/>
     
     <elements:CircularText x:Name="circularText"
                   AbsoluteLayout.LayoutFlags="All"
                   AbsoluteLayout.LayoutBounds="0, .25, 1, .4"/>
-    
+
     <Label x:Name="leftTime"
            FontSize="36"
            AbsoluteLayout.LayoutFlags="All"
@@ -30,19 +27,11 @@
             Maximum="60"
             Minimum="1"
             ValueChanged="OnSliderValueChanged"/>
-    
-    <Button x:Name="stopButton"
-            AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0, .7, 1, .1"
-            Text="stop"
-            IsEnabled ="false"
-            Clicked="OnStopButtonClicked"/>
-    
-    <Button x:Name="chooseButton"
-            AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0, .8, 1, .1"
-            Text="Choose Job"
-            Clicked="OnChooseButtonClicked"/>
 
+    <Label x:Name="StopOrChoose"
+           FontSize="36"
+           Text="Choose Job?"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds="0, .8, 1, .2"/>
   </AbsoluteLayout>
 </ContentPage>

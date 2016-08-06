@@ -12,61 +12,65 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StartPage : ContentPage
     {
-        public event EventHandler StatisticButtonClicked;
-        public event EventHandler ChooseButtonClicked;
-        public event EventHandler StopButtonClicked;
-        public event EventHandler SliderValueChanged;
+        public event EventHandler StaticLabelClicked;
+        public event EventHandler ChooseLabelClicked;
+        public event EventHandler StopLabelClicked;
         
-        public void updateUI(bool timer, int summary, int left)
+        public void updateUI(bool timer, int left)
         {
             if (timer)
             {
-                chooseButton.IsEnabled = false;
-                statisticButton.IsEnabled = false;
+                statisticLabel.IsEnabled = false;
+                statisticLabel.IsVisible = false;
                 slider.IsEnabled = false;
-                stopButton.IsEnabled = true;
+                slider.IsVisible = false;
+                StopOrChoose.Text = "Stop";
+
                 double complete = ((int)slider.Value - (double)left / 60) / (int)slider.Value;
-                stopButton.Text = slider.Value.ToString() + " : " + left.ToString() + " : " + complete.ToString();
                 circularText.Update(complete);
             }
             else
             {
-                chooseButton.IsEnabled = true;
-                statisticButton.IsEnabled = true;
+                statisticLabel.IsEnabled = true;
+                statisticLabel.IsVisible = true;
                 slider.IsEnabled = true;
-                stopButton.IsEnabled = false;
+                slider.IsVisible = true;
+                StopOrChoose.Text = "Choose Job?";
+
                 circularText.Update(1);
             }
-            summaryTime.Text = g.strToSec(summary);
             leftTime.Text = g.strToSec(left);
         }
 
-        public StartPage(int summary, int sliderValue)
+        public StartPage()
         {
             InitializeComponent();
-            slider.Value = sliderValue;
-            updateUI(false, summary, sliderValue * 60);   
-        }
 
-        public void OnStatisticButtonClicked(object sender, EventArgs args)
-        {
-            StatisticButtonClicked?.Invoke(null, EventArgs.Empty);
-        }
-                    
-        public void OnChooseButtonClicked(object sender, EventArgs args)
-        {
-            ChooseButtonClicked?.Invoke(null, EventArgs.Empty);
-        }
-
-        public void OnStopButtonClicked(object sender, EventArgs args)
-        {
-            StopButtonClicked?.Invoke(null, EventArgs.Empty);
+            slider.Value = (double)g.period;
+            updateUI(false, g.period);
+            statisticLabel.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    StaticLabelClicked?.Invoke(null, EventArgs.Empty);
+                })
+            });
+            StopOrChoose.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    if(StopOrChoose.Text == g.stop)
+                        StopLabelClicked?.Invoke(null, EventArgs.Empty);
+                    else
+                        ChooseLabelClicked?.Invoke(null, EventArgs.Empty);
+                })
+            });
         }
 
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
-            SliderValueChanged?.Invoke((int)slider.Value, EventArgs.Empty);
             leftTime.Text = g.strToSec((int)slider.Value * 60);
+            g.period = (int)slider.Value;
         }
         
     }

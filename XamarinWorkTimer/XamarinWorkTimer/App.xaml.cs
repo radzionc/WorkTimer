@@ -24,13 +24,11 @@ namespace XamarinWorkTimer
         int preventInterval = 0;
         bool stopTimer = true;
         bool stopTick = false;
-        int period;
         public bool InStartPage => MainPage == startPage;
         void PropertiesChecking()
         {
             if (!Properties.ContainsKey(g.slider))
                 Properties[g.slider] = 46;
-            period = (int)Properties[g.slider] * 60;
             if (!Properties.ContainsKey(g.lastTime))
                 Properties[g.lastTime] = DateTime.Now;
         }
@@ -41,7 +39,7 @@ namespace XamarinWorkTimer
 
             PropertiesChecking();
             LookForMidnight();
-            startPage = new StartPage(itemDB.Sum(), (int)Properties[g.slider]);
+            startPage = new StartPage();
             choosePage = new ChoosePage();
             MainPage = startPage;
 
@@ -52,14 +50,9 @@ namespace XamarinWorkTimer
                 AddItem((string)sender);
             };
 
-            startPage.ChooseButtonClicked += OnChoosePage;
-            startPage.StatisticButtonClicked += OnStatisticPage;
-            startPage.StopButtonClicked += Stop;
-            startPage.SliderValueChanged += (object sender, EventArgs args) =>
-            {
-                Properties[g.slider] = (int)sender;
-                period = (int)sender * 60;
-            };
+            startPage.ChooseLabelClicked += OnChoosePage;
+            startPage.StaticLabelClicked += OnStatisticPage;
+            startPage.StopLabelClicked += Stop;
 
             Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
         }
@@ -73,11 +66,11 @@ namespace XamarinWorkTimer
             {
                 int currentInterval = (int)(DateTime.Now - startTime).TotalSeconds;
                 int delay = currentInterval - preventInterval;
-                int leftTime = period - currentInterval;
+                int leftTime = g.period * 60 - currentInterval;
                 if (delay > 0)
                 {
                     if (leftTime <= 0)
-                        delay = period - preventInterval;
+                        delay = g.period * 60 - preventInterval;
 
                     System.Diagnostics.Debug.WriteLine($"!!!\n current = {currentInterval}\n delay = {delay}\n leftTime = {leftTime}\n!!!");
                     item.Time += delay;
@@ -88,10 +81,9 @@ namespace XamarinWorkTimer
                     if (leftTime > 0)
                     {
                         preventInterval = currentInterval;
-                        startPage.updateUI(!stopTimer, itemDB.Sum(), leftTime);
+                        startPage.updateUI(!stopTimer, leftTime);
                     }
                     else Stop(null, EventArgs.Empty);
-
 
                 }
             }
@@ -102,7 +94,7 @@ namespace XamarinWorkTimer
         {
             preventInterval = 0;
             stopTimer = true;
-            startPage.updateUI(false, itemDB.Sum(), period);
+            startPage.updateUI(false, g.period * 60);
             DependencyService.Get<IReminderService>().Cancel();
         }
 
@@ -144,7 +136,7 @@ namespace XamarinWorkTimer
 
         public void OnStartPage()
         {
-            startPage.updateUI(!stopTimer, itemDB.Sum(), (int)Properties[g.slider] * 60);
+            startPage.updateUI(!stopTimer, g.period * 60);
             MainPage = startPage;
         }
 
@@ -162,7 +154,7 @@ namespace XamarinWorkTimer
             item = itemDB.Get(chooseLine.Name);
             preventInterval = 0;
 
-            DependencyService.Get<IReminderService>().Remind(period, "Got it!", "You finish " + chooseLine.Name + "!");
+            DependencyService.Get<IReminderService>().Remind(g.period * 60, "Got it!", "You finish " + chooseLine.Name + "!");
             OnStartPage();
         }
 
