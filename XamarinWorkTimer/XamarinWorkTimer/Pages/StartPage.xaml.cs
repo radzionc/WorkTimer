@@ -12,7 +12,7 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StartPage : ContentPage
     {
-        public event EventHandler StaticLabelClicked;
+        public event EventHandler StatisticLabelClicked;
         public event EventHandler ChooseLabelClicked;
         public event EventHandler StopLabelClicked;
         
@@ -39,6 +39,7 @@ namespace XamarinWorkTimer.Pages
 
                 circularText.Update(1);
             }
+
             leftTime.Text = g.strToSec(left);
         }
 
@@ -46,13 +47,13 @@ namespace XamarinWorkTimer.Pages
         {
             InitializeComponent();
 
-            slider.Value = (double)g.period;
-            updateUI(false, g.period);
+            slider.Value = g.period; 
+            updateUI(false, g.period * 60);
             statisticLabel.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
                 {
-                    StaticLabelClicked?.Invoke(null, EventArgs.Empty);
+                    StatisticLabelClicked?.Invoke(null, EventArgs.Empty);
                 })
             });
             StopOrChoose.GestureRecognizers.Add(new TapGestureRecognizer()

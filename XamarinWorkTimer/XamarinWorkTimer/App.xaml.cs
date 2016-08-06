@@ -51,7 +51,7 @@ namespace XamarinWorkTimer
             };
 
             startPage.ChooseLabelClicked += OnChoosePage;
-            startPage.StaticLabelClicked += OnStatisticPage;
+            startPage.StatisticLabelClicked += OnStatisticPage;
             startPage.StopLabelClicked += Stop;
 
             Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
@@ -94,7 +94,10 @@ namespace XamarinWorkTimer
         {
             preventInterval = 0;
             stopTimer = true;
-            startPage.updateUI(false, g.period * 60);
+            //////Weird bag////////
+            MainPage = choosePage;
+            OnStartPage();
+            //////Weird bag////////
             DependencyService.Get<IReminderService>().Cancel();
         }
 
