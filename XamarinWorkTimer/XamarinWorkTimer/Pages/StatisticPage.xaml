@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinWorkTimer.Pages.StatisticPage">
 
-  <Grid Padding="5">
+  <Grid x:Name="grid" Padding="5">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="3*" />
+      <RowDefinition Height="5*" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="6*" />
     </Grid.RowDefinitions>
+    
     <Label x:Name="performanceLabel"
            Text="Today's Performance: "
            HorizontalTextAlignment="Center"
@@ -19,16 +20,14 @@
 
     <AbsoluteLayout x:Name="intervalLayout"
                     Grid.Row="1"
-                    BackgroundColor="Aqua"/>
+                    BackgroundColor="Teal"/>
 
-    <Label x:Name="intervalLabel"
-           Grid.Row="2"
-           VerticalTextAlignment="Center"
-           FontSize="Medium"/>
-
-    <ScrollView Grid.Row="3">
+    <ScrollView Grid.Row="2">
       <StackLayout x:Name="itemLayout"/>
     </ScrollView>
+
+    <StackLayout x:Name="navigationLine"
+                 Grid.Row="3"/>
 
   </Grid>
 </ContentPage>

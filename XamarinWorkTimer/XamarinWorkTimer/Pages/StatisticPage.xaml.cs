@@ -12,40 +12,39 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StatisticPage : ContentPage
     {
-        IntervalBox previous;
-        
-        public StatisticPage(List<Interval> intervals)
+        public StatisticPage()
         {
             InitializeComponent();
 
-            performanceLabel.Text += g.SecToStr(g.TodaySum());
+            var fs = new FormattedString();
+            fs.Spans.Add(new Span { Text = performanceLabel.Text });
+            fs.Spans.Add(new Span
+            {
+                Text = g.SecToStr(g.TodaySum()),
+                ForegroundColor = Color.Silver
+            });
+            performanceLabel.FormattedText = fs;
+
             Dictionary<string, int> items = new Dictionary<string, int>();
 
-            foreach (Interval interval in intervals)
+            foreach (Interval interval in g.intervalDB.GetAll())
             {
                 IntervalBox box = new IntervalBox(interval);
-
-                if(!items.ContainsKey(interval.Name))
-                    items.Add(interval.Name, interval.Sum);
-                        else
-                items[interval.Name] += interval.Sum;
-
-                box.GestureRecognizers.Add(new TapGestureRecognizer()
-                {
-                    Command = new Command(() =>
-                    {
-                        if (previous != null)
-                            previous.Choosen = false;
-                        box.Choosen = true;
-                        intervalLabel.Text = box.Log;
-                        previous = box;
-                    })
-                });
                 intervalLayout.Children.Add(box, box._Rectangle, AbsoluteLayoutFlags.All);
+
+                if (!items.ContainsKey(interval.Name))
+                    items.Add(interval.Name, interval.Sum);
+                else
+                    items[interval.Name] += interval.Sum;
             }
 
-            foreach (var item in items)
+            foreach (var item in items.OrderBy(x => x.Value))
                 itemLayout.Children.Add(new StatisticLine(item.Key, item.Value));
+
+            StackLayout sl = new StackLayout();
+            sl.Children.Add(new BoxView() { Color = Color.Silver, WidthRequest = 100, HeightRequest = 2 });
+            sl.Children.Add(new NavigationLine());
+            grid.Children.Add(sl, 0, 3);
         }
     }
 }

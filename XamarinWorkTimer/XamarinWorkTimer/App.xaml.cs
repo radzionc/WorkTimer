@@ -67,8 +67,6 @@ namespace XamarinWorkTimer
                     if (leftTime <= 0)
                         delay = g.period * 60 - preventInterval;
 
-                    System.Diagnostics.Debug.WriteLine($"!!!\n current = {currentInterval}\n delay = {delay}\n leftTime = {leftTime}\n!!!");
-                    
                     interval.Sum += delay;
                     g.intervalDB.Update(interval);
 
@@ -144,7 +142,7 @@ namespace XamarinWorkTimer
         }
         public void OnStatisticPage(object sender, EventArgs args)
         {
-            MainPage = new StatisticPage(g.intervalDB.GetAll());
+            MainPage = new StatisticPage();
         }
 
         protected override void OnStart()

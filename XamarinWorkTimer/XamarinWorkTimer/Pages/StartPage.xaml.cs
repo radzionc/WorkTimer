@@ -24,7 +24,7 @@ namespace XamarinWorkTimer.Pages
                 statisticLabel.IsVisible = false;
                 slider.IsEnabled = false;
                 slider.IsVisible = false;
-                StopOrChoose.Text = "Stop";
+                StopOrChoose.Text = g.stop;
 
                 double complete = ((int)slider.Value - (double)left / 60) / (int)slider.Value;
                 circularText.Update(complete);
@@ -35,7 +35,7 @@ namespace XamarinWorkTimer.Pages
                 statisticLabel.IsVisible = true;
                 slider.IsEnabled = true;
                 slider.IsVisible = true;
-                StopOrChoose.Text = "Choose Job?";
+                StopOrChoose.Text = g.choose;
 
                 circularText.Update(1);
             }
@@ -69,8 +69,10 @@ namespace XamarinWorkTimer.Pages
 
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
-            leftTime.Text = g.SecToStr((int)slider.Value * 60);
-            g.period = (int)slider.Value;
+            int value = (int)Math.Ceiling(slider.Value);
+
+            leftTime.Text = g.SecToStr(value * 60);
+            g.period = value;
         }
         
     }

@@ -9,8 +9,10 @@ namespace XamarinWorkTimer.DataBase
     public class DB<T> where T : struct
     {
         protected SQLiteConnection database;
+        public string Name { get; private set; }
         public DB(string name)
         {
+            Name = name;
             database = DependencyService.Get<ISQLite>().GetConnection(name);
             database.CreateTable<T>();
         }
@@ -43,6 +45,11 @@ namespace XamarinWorkTimer.DataBase
         public void Update(T instance)
         {
             database.Update(instance);
+        }
+
+        public int Count()
+        {
+            return GetAll().Count();
         }
     }
 }

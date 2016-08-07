@@ -20,7 +20,12 @@ namespace XamarinWorkTimer
         public static string lastTime = "lastTime";
         public static string dateFormat = "dd:MM:yyyy";
         public static string timeFormat = "HH:mm:ss";
+
+        public static string month = "month";
+        public static string week = "week";
+        public static string today = "today";
         public static int secondsInDay = 86400;
+
         public static int period
         {
             get { return (int)App.Current.Properties[slider]; }

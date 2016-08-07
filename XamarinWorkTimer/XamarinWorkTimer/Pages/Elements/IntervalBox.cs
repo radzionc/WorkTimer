@@ -11,19 +11,12 @@ namespace XamarinWorkTimer.Pages.Elements
 {
     public class IntervalBox : BoxView
     {
-        Color True = Color.Purple;
-        Color False = Color.Navy;
-        public bool Choosen { set { Color = value ? True : False; } }
         public IntervalBox(Interval interval)
         {
-            _Interval = interval;
-            Color = False;
+            Color = Color.Silver;
             int startTime = g.StrToSec(interval.StartPK);
             _Rectangle = new Rectangle((double)startTime/ g.secondsInDay, 0, (double)interval.Sum/ g.secondsInDay, 1);
-            Log = $"{interval.Name} : {interval.StartPK} - {g.SecToStr((g.StrToSec(interval.StartPK) + interval.Sum))} : {g.SecToStr(interval.Sum)}";
         }
         public Rectangle _Rectangle { get; private set; }
-        public Interval _Interval { get; private set; }
-        public string Log { get; private set; }
     }
 }

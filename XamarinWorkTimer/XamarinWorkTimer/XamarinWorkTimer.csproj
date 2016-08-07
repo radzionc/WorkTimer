@@ -51,6 +51,7 @@
     <Compile Include="Pages\Elements\ChooseLine.cs" />
     <Compile Include="Pages\Elements\CircularText.cs" />
     <Compile Include="Pages\Elements\IntervalBox.cs" />
+    <Compile Include="Pages\Elements\NavigationLine.cs" />
     <Compile Include="Pages\Elements\StatisticLine.cs" />
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>

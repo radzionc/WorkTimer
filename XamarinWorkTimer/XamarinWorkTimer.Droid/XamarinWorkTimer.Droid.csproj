@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="Implementations\AlarmReceiver.cs" />
     <Compile Include="Implementations\AndroidReminderService.cs" />
+    <Compile Include="Implementations\NotificationService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

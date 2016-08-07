@@ -3,6 +3,8 @@ using Android.App;
 using Android.Support.V4.App;
 using Android.Graphics;
 using Android.Support.V4.Content;
+using XamarinWorkTimer.Droid.Implementations;
+using Android.OS;
 
 namespace XamarinWorkTimer.Droid
 {
@@ -11,12 +13,12 @@ namespace XamarinWorkTimer.Droid
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            StartWakefulService(context, intent);
-
             string message = intent.GetStringExtra("message");
             string title = intent.GetStringExtra("title");
 
-            Intent notIntent = new Intent(context, typeof(MainActivity));
+            Intent notIntent = new Intent(context, typeof(NotificationService));
+            StartWakefulService(context, notIntent);
+                
             PendingIntent contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
             NotificationManager manager = NotificationManager.FromContext(context);
             var style = new Notification.BigTextStyle();
@@ -32,7 +34,7 @@ namespace XamarinWorkTimer.Droid
             var builder = new Notification.Builder(context)
                 .SetPriority((int)NotificationPriority.Max)
                 .SetVisibility(NotificationVisibility.Public)
-                .SetDefaults(NotificationDefaults.All)
+                .SetDefaults(NotificationDefaults.Vibrate)
                 .SetCategory(Notification.CategoryAlarm)
                 .SetContentIntent(contentIntent)
                 .SetSmallIcon(Resource.Drawable.icon)
@@ -43,6 +45,7 @@ namespace XamarinWorkTimer.Droid
 
             var notification = builder.Build();
             manager.Notify(0, notification);
+
         }
     }
 }
