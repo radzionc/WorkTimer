@@ -15,7 +15,7 @@ namespace XamarinWorkTimer.Pages
         public event EventHandler StatisticLabelClicked;
         public event EventHandler ChooseLabelClicked;
         public event EventHandler StopLabelClicked;
-        
+
         public void updateUI(bool timer, int left)
         {
             if (timer)
@@ -46,7 +46,6 @@ namespace XamarinWorkTimer.Pages
         public StartPage()
         {
             InitializeComponent();
-
             slider.Value = g.period; 
             updateUI(false, g.period * 60);
             statisticLabel.GestureRecognizers.Add(new TapGestureRecognizer()

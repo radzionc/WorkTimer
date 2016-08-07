@@ -39,19 +39,16 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataBase\DB.cs" />
-    <Compile Include="DataBase\ItemDB.cs" />
     <Compile Include="DataBase\Summary.cs" />
     <Compile Include="DataBase\Interval.cs" />
     <Compile Include="g.cs" />
-    <Compile Include="interfaces\IReminderService.cs" />
-    <Compile Include="interfaces\ISQLite.cs" />
+    <Compile Include="Interfaces\IReminderService.cs" />
+    <Compile Include="Interfaces\ISQLite.cs" />
     <Compile Include="Pages\ChoosePage.xaml.cs">
       <DependentUpon>ChoosePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataBase\Item.cs" />
-    <Compile Include="Pages\Elements\ChooseLine.xaml.cs">
-      <DependentUpon>ChooseLine.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Pages\Elements\ChooseLine.cs" />
     <Compile Include="Pages\Elements\CircularText.cs" />
     <Compile Include="Pages\Elements\IntervalBox.cs" />
     <Compile Include="Pages\StartPage.xaml.cs">
@@ -99,12 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\ChoosePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Pages\Elements\ChooseLine.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

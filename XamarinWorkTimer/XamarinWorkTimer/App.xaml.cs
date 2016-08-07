@@ -10,16 +10,12 @@ namespace XamarinWorkTimer
 {
     public partial class App : Application
     {
-        ItemDB itemDB = new ItemDB(g.item);
-        DB<Interval> intervalDB = new DB<Interval>(g.interval);
-        DB<Sum> sumDB = new DB<Sum>(g.sum);
         StartPage startPage;
         ChoosePage choosePage;
-        ChooseLine chooseLine;
 
         DateTime startTime;
         Interval interval;
-        Item item;
+        string name;
 
         int preventInterval = 0;
         bool stopTimer = true;
@@ -43,11 +39,10 @@ namespace XamarinWorkTimer
             choosePage = new ChoosePage();
             MainPage = startPage;
 
-            foreach (Item item in itemDB.GetAll())
-                AddChooseLine(item.NamePK, item.Time);
-            choosePage.InputCompleted += (object sender, EventArgs args) =>
+            choosePage.LineClicked += (object sender, EventArgs args) =>
             {
-                AddItem((string)sender);
+                name = (string)sender;
+                FromChooseToStartPage();
             };
 
             startPage.ChooseLabelClicked += OnChoosePage;
@@ -73,10 +68,9 @@ namespace XamarinWorkTimer
                         delay = g.period * 60 - preventInterval;
 
                     System.Diagnostics.Debug.WriteLine($"!!!\n current = {currentInterval}\n delay = {delay}\n leftTime = {leftTime}\n!!!");
-                    item.Time += delay;
-                    itemDB.Update(item);
+                    
                     interval.Sum += delay;
-                    intervalDB.Update(interval);
+                    g.intervalDB.Update(interval);
 
                     if (leftTime > 0)
                     {
@@ -107,34 +101,23 @@ namespace XamarinWorkTimer
         {
             if (((DateTime)Properties[g.lastTime]).Date != DateTime.Today)
             {
-                int sum = itemDB.Sum();
+                int sum = g.TodaySum();
                 string date = ((DateTime)Properties[g.lastTime]).ToString(g.dateFormat);
-                if (sumDB.Get(date).DatePK != null)
-                    sumDB.Delete(date);
-                sumDB.Add(new Sum { DatePK = date, Value = sum });
+                if (g.sumDB.Get(date).DatePK != null)
+                    g.sumDB.Delete(date);
+                g.sumDB.Add(new Sum { DatePK = date, Value = sum });
 
-                intervalDB.DeleteAll();
+                g.intervalDB.DeleteAll();
                 if (stopTimer == false)
                 {
-                    item.Time = 0;
                     interval.StartPK = DateTime.Now.ToString(g.timeFormat);
-                    interval.Name = item.NamePK;
+                    interval.Name = name;
                     interval.Sum = 0;
                 }
-                itemDB.Clean();
 
                 Midnight?.Invoke(null, EventArgs.Empty);
             }
             Properties[g.lastTime] = DateTime.Now;
-        }
-
-        public void AddItem(string name)
-        {
-            if (itemDB.Get(name).NamePK == null)
-            {
-                itemDB.Add(new Item() { NamePK = name });
-                AddChooseLine(name);
-            }
         }
 
         public void OnStartPage()
@@ -143,42 +126,29 @@ namespace XamarinWorkTimer
             MainPage = startPage;
         }
 
-        public void FromChooseToStartPage(ChooseLine line)
+        public void FromChooseToStartPage()
         {
-            chooseLine = line;
             stopTimer = false;
             startTime = DateTime.Now;
 
             interval.StartPK = startTime.ToString(g.timeFormat);
-            interval.Name = chooseLine.Name;
+            interval.Name = name;
             interval.Sum = 0;
-            intervalDB.Add(interval);
+            g.intervalDB.Add(interval);
 
-            item = itemDB.Get(chooseLine.Name);
             preventInterval = 0;
 
-            DependencyService.Get<IReminderService>().Remind(g.period * 60, "Got it!", "You finish " + chooseLine.Name + "!");
+            DependencyService.Get<IReminderService>().Remind(g.period * 60, "Got it!", "You finish " + name + "!");
             OnStartPage();
         }
 
         public void OnChoosePage(object sender, EventArgs args)
         {
-            if (chooseLine != null)
-                chooseLine.Time = itemDB.Get(chooseLine.Name).Time;
             MainPage = choosePage;
         }
         public void OnStatisticPage(object sender, EventArgs args)
         {
-            MainPage = new StatisticPage(intervalDB.GetAll());
-        }
-
-        public void AddChooseLine(string name, int time = 0)
-        {
-            ChooseLine line = new ChooseLine(name, time);
-            line.StartButtonClick += delegate { FromChooseToStartPage(line); };
-            line.DeleteButtonClick += delegate { itemDB.Delete(line.Name); };
-            Midnight += delegate { line.Time = 0; };
-            choosePage.AddLine(line);
+            MainPage = new StatisticPage(g.intervalDB.GetAll());
         }
 
         protected override void OnStart()
