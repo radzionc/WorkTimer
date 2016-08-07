@@ -40,7 +40,7 @@ namespace XamarinWorkTimer.Pages
                 circularText.Update(1);
             }
 
-            leftTime.Text = g.strToSec(left);
+            leftTime.Text = g.SecToStr(left);
         }
 
         public StartPage()
@@ -69,7 +69,7 @@ namespace XamarinWorkTimer.Pages
 
         public void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
         {
-            leftTime.Text = g.strToSec((int)slider.Value * 60);
+            leftTime.Text = g.SecToStr((int)slider.Value * 60);
             g.period = (int)slider.Value;
         }
         

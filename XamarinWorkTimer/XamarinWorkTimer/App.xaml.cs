@@ -95,8 +95,6 @@ namespace XamarinWorkTimer
             DependencyService.Get<IReminderService>().Cancel();
         }
 
-        public event EventHandler Midnight;
-
         private void LookForMidnight()
         {
             if (((DateTime)Properties[g.lastTime]).Date != DateTime.Today)
@@ -114,8 +112,6 @@ namespace XamarinWorkTimer
                     interval.Name = name;
                     interval.Sum = 0;
                 }
-
-                Midnight?.Invoke(null, EventArgs.Empty);
             }
             Properties[g.lastTime] = DateTime.Now;
         }

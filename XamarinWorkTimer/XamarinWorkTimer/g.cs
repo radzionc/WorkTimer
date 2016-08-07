@@ -40,7 +40,7 @@ namespace XamarinWorkTimer
 
             return result;
         }
-        public static string strToSec(int seconds)
+        public static string SecToStr(int seconds)
         {
             TimeSpan sec = TimeSpan.FromSeconds(seconds);
 
@@ -52,7 +52,7 @@ namespace XamarinWorkTimer
                 return sec.ToString(@"hh\:mm\:ss");
         }
         
-        public static int secToStr(string time)
+        public static int StrToSec(string time)
         {
             string[] times = time.Split(':');
             return int.Parse(times[0]) * 3600 + int.Parse(times[1]) * 60 + int.Parse(times[2]);
