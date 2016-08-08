@@ -8,8 +8,7 @@
   
     <Grid.RowDefinitions>
       <RowDefinition Height="7*" />
-      <RowDefinition Height="*" />
-      <RowDefinition Height="*" />
+      <RowDefinition Height="2*" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
@@ -18,8 +17,32 @@
             Grid.Row="0">
       </Grid>
     </ScrollView>
-
-    <Label x:Name="sumLabel"
-           BackgroundColor="Red"
-           Grid.Row="1"/>
+    
+    <StackLayout x:Name="logLayout" 
+                 Grid.Row="1">
+      <BoxView Color="Silver" 
+               WidthRequest="100"
+               HeightRequest="2"/>
+      
+      <StackLayout Orientation="Horizontal">
+        <Label x:Name="name" 
+               HorizontalOptions="Center"
+               TextColor="Silver"/>
+      </StackLayout>  
+      <StackLayout x:Name="summaryLayout"
+                   Orientation="Horizontal">
+        <Label Text="Summary"
+               HorizontalOptions="StartAndExpand"/>
+        <Label x:Name="summary"
+               HorizontalOptions="End"/>
+      </StackLayout>  
+      <StackLayout x:Name="averageLayout"
+                   Orientation="Horizontal">
+        <Label Text="Average"
+               HorizontalOptions="StartAndExpand"/>
+        <Label x:Name="average"
+               HorizontalOptions="End"/>
+      </StackLayout>  
+    </StackLayout>
+           
 </Grid>

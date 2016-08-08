@@ -15,13 +15,10 @@ namespace XamarinWorkTimer.Pages.Elements
         string text = new string('|', length);
         public void Update(double complete)
         {
-            int len = (int)(complete * length);
-            text = new string('|', len) + new string(' ', length - len);
+            int border = (int)Math.Ceiling(complete * length);
 
             for (int index = 0; index < text.Length; index++)
-            {
-                labels[index].Text = text[index].ToString();
-            }
+                labels[index].TextColor = (index < border) ? Color.Teal : Color.Silver;
         }
         public CircularText()
         {

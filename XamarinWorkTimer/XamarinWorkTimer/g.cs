@@ -55,7 +55,8 @@ namespace XamarinWorkTimer
         public static string SecToStr(int seconds)
         {
             TimeSpan sec = TimeSpan.FromSeconds(seconds);
-
+            if (seconds > secondsInDay)
+                return sec.ToString(@"0:dd\.hh\:mm\:ss") + "days";
             if (seconds < 3600)
                 return sec.ToString(@"mm\:ss");
             else if (seconds == 3600)

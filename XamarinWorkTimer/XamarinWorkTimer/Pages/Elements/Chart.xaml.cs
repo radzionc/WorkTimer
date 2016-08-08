@@ -12,10 +12,12 @@ namespace XamarinWorkTimer.Pages
     public partial class Chart : Grid
     {
         double barSize;
+        BoxView previousBox;
         Dictionary<DateTime, int> sums = new Dictionary<DateTime, int>();
         DateTime first = g.StrToDate(g.sumDB.GetAll().First().DatePK);
         DateTime last = DateTime.Today;
-        string type; 
+        string type;
+        int position = 0;
 
         public Chart(string type)
         {
@@ -41,49 +43,43 @@ namespace XamarinWorkTimer.Pages
         }
         void BarsCreation()
         {
-            List<View> views = new List<View>();
-
             for (DateTime date = first; date <= last; date = date.AddDays(1.0))
             {
+                int sum = 0;
+
                 if(type == g.day)
                 {
-                    int sum = 0;
                     if (sums.ContainsKey(date))
                         sum = sums[date];
-                    BoxView boxView = new BoxView
-                    {
-                        Color = Color.Teal,
-                        HeightRequest = (double)sum / g.secondsInDay * 1000,
-                        VerticalOptions = LayoutOptions.End
-                    };
-                    views.Add(boxView);
+
+                    string name;
+                    if (date.Date == DateTime.Today)
+                        name = "Today";
+                    else if (date.Date.AddDays(1.0) == DateTime.Today)
+                        name = "Yesterday";
+                    else
+                        name = date.ToString(g.dateFormat);
+                    AddBar(name, (double)sum / g.secondsInDay * 1000, sum);
                 }
                 else if(type == g.week)
                 {
-                    int sum = 0;
                     for(DateTime d = date; d <= last; date = date.AddDays(1.0))
                     {
+                        if (g.GetIso8601WeekOfYear(d) == g.GetIso8601WeekOfYear(date) && sums.ContainsKey(d))
+                            sum += sums[d];
+
                         if (g.GetIso8601WeekOfYear(d) != g.GetIso8601WeekOfYear(date) || d == last)
                         {
                             date = d;
-                            BoxView boxView = new BoxView
-                            {
-                                Color = Color.Teal,
-                                HeightRequest = sum / 7 / g.secondsInDay * 1000,
-                                VerticalOptions = LayoutOptions.End
-                            };
-                            views.Add(boxView);
+                            string name = $"{g.GetIso8601WeekOfYear(date).ToString()}'s week";
+                            AddBar(name, (double)sum / 7 / g.secondsInDay * 1000, sum, sum / 7);
                             break;
                         }
-
-                        if (sums.ContainsKey(d))
-                            sum += sums[d];
                     }
                 }
 
                 else if (type == g.month)
                 {
-                    int sum = 0;
                     for (DateTime d = date; d <= last; date = date.AddDays(1.0))
                     {
                         if (d.Month == date.Month && sums.ContainsKey(d))
@@ -92,24 +88,56 @@ namespace XamarinWorkTimer.Pages
                         if (d.Month != date.Month || d == last)
                         {
                             date = d;
-                            BoxView boxView = new BoxView
-                            {
-                                Color = Color.Teal,
-                                HeightRequest = sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 1000,
-                                VerticalOptions = LayoutOptions.End
-                            };
-                            views.Add(boxView);
+                            string log = date.Month.ToString("MMM");
+                            AddBar(log, (double)sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 1000, sum, sum / DateTime.DaysInMonth(date.Year, date.Month));
                             break;
                         }
                     }
                 }
             }
+        }
 
-            for (int i = 0; i < views.Count(); i++)
+        void AddBar(string name, double height, int sum = 0, int average = 0) 
+        {
+            BoxView boxView = new BoxView
             {
-                chart.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(barSize) });
-                chart.Children.Add(views[i], i, 0);
-            }
+                Color = Color.Teal,
+                HeightRequest = height,
+                VerticalOptions = LayoutOptions.End
+            };
+
+            ContentView bar = new ContentView();
+            bar.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    if (boxView != previousBox)
+                    {
+                        if (previousBox != null)
+                            previousBox.Color = Color.Teal;
+                        previousBox = boxView;
+                        boxView.Color = Color.Silver;
+
+                        logLayout.IsVisible = true;
+                        this.name.Text = name;
+                        if (sum == 0)
+                            summaryLayout.IsVisible = false;
+                        else
+                            summary.Text = g.SecToStr(sum);
+
+                        if (average == 0)
+                            averageLayout.IsVisible = false;
+                        else
+                            this.average.Text = g.SecToStr(sum);
+                    }
+                })
+            });
+            bar.Content = boxView;
+
+            chart.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(barSize) });
+            chart.Children.Add(bar, position, 0);
+
+            position++;
         }
     }
 }
