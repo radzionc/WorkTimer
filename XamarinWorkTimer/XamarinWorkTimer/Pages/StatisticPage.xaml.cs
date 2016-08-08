@@ -12,39 +12,29 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class StatisticPage : ContentPage
     {
+        Today today = new Today();
+        Grid main;
         public StatisticPage()
         {
             InitializeComponent();
+            GridMain(today);
 
-            var fs = new FormattedString();
-            fs.Spans.Add(new Span { Text = performanceLabel.Text });
-            fs.Spans.Add(new Span
+            navigationLine.Clicked += (object sender, EventArgs args) =>
             {
-                Text = g.SecToStr(g.TodaySum()),
-                ForegroundColor = Color.Silver
-            });
-            performanceLabel.FormattedText = fs;
-
-            Dictionary<string, int> items = new Dictionary<string, int>();
-
-            foreach (Interval interval in g.intervalDB.GetAll())
-            {
-                IntervalBox box = new IntervalBox(interval);
-                intervalLayout.Children.Add(box, box._Rectangle, AbsoluteLayoutFlags.All);
-
-                if (!items.ContainsKey(interval.Name))
-                    items.Add(interval.Name, interval.Sum);
+                if ((string)sender == g.today)
+                    GridMain(today);
                 else
-                    items[interval.Name] += interval.Sum;
-            }
+                    GridMain(new Chart((string)sender));
+            };
+        }
 
-            foreach (var item in items.OrderBy(x => x.Value))
-                itemLayout.Children.Add(new StatisticLine(item.Key, item.Value));
+        public void GridMain(Grid newGrid)
+        {
+            if (main != null)
+                grid.Children.Remove(main);
+            main = newGrid;
 
-            StackLayout sl = new StackLayout();
-            sl.Children.Add(new BoxView() { Color = Color.Silver, WidthRequest = 100, HeightRequest = 2 });
-            sl.Children.Add(new NavigationLine());
-            grid.Children.Add(sl, 0, 3);
+            grid.Children.Add(newGrid, 0, 0);
         }
     }
 }

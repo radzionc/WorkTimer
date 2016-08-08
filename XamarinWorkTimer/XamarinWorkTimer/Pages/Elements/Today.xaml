@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      x:Class="XamarinWorkTimer.Pages.Elements.Today"
+      x:Name="grid">
+  
+  <Grid.RowDefinitions>
+    <RowDefinition Height="*" />
+    <RowDefinition Height="3*" />
+    <RowDefinition Height="5*" />
+    <RowDefinition Height="*" />
+  </Grid.RowDefinitions>
+
+  <Label x:Name="performanceLabel"
+           Text="Today's Performance: "
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center"
+           Grid.Row="0"
+           FontSize="Large"/>
+
+  <AbsoluteLayout x:Name="intervalLayout"
+                  Grid.Row="1"
+                  BackgroundColor="Teal"/>
+
+  <ScrollView Grid.Row="2">
+    <StackLayout x:Name="itemLayout"/>
+  </ScrollView>
+</Grid>

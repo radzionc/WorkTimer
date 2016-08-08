@@ -15,10 +15,12 @@ namespace XamarinWorkTimer.Pages.Elements
         {
             Orientation = StackOrientation.Horizontal;
             Padding = 5;
-            //if (g.sumDB.Count() > 30)
+            if (g.sumDB.Count() > 30)
                 addLine(g.month);
-            //if (g.sumDB.Count() > 7)
+            if (g.sumDB.Count() > 14)
                 addLine(g.week);
+            if (g.sumDB.Count() > 2)
+                addLine(g.day);
             addLine(g.today);
         }
 
@@ -29,19 +31,19 @@ namespace XamarinWorkTimer.Pages.Elements
                 Text = name,
                 
                 HorizontalOptions = LayoutOptions.CenterAndExpand
-                //HorizontalTextAlignment = TextAlignment.Start
             };
             if (name == g.today)
                 label.TextColor = Color.Silver;
-            //else
-                //label.Text += " | ";
 
             label.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
                 {
-                    label.TextColor = Color.Silver;
-                    Clicked?.Invoke(name, EventArgs.Empty);
+                    if (label.TextColor != Color.Silver)
+                    {
+                        label.TextColor = Color.Silver;
+                        Clicked?.Invoke(name, EventArgs.Empty);
+                    }
                 })
             });
             Clicked += (object sender, EventArgs args) =>

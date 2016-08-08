@@ -1,33 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XamarinWorkTimer.Pages.StatisticPage">
-
-  <Grid x:Name="grid" Padding="5">
+             xmlns:elements="clr-namespace:XamarinWorkTimer.Pages.Elements"
+             x:Class="XamarinWorkTimer.Pages.StatisticPage"
+             Padding="5">
+  <Grid x:Name="grid">
     <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="3*" />
-      <RowDefinition Height="5*" />
+      <RowDefinition Height="9*" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    
-    <Label x:Name="performanceLabel"
-           Text="Today's Performance: "
-           HorizontalTextAlignment="Center"
-           VerticalTextAlignment="Center"
-           Grid.Row="0"
-           FontSize="Large"/>
 
-    <AbsoluteLayout x:Name="intervalLayout"
-                    Grid.Row="1"
-                    BackgroundColor="Teal"/>
-
-    <ScrollView Grid.Row="2">
-      <StackLayout x:Name="itemLayout"/>
-    </ScrollView>
-
-    <StackLayout x:Name="navigationLine"
-                 Grid.Row="3"/>
-
+    <StackLayout Grid.Row="1">
+      <BoxView Color="Silver" 
+               WidthRequest="100"
+               HeightRequest="2"/>
+      <elements:NavigationLine x:Name="navigationLine"/>
+    </StackLayout>
   </Grid>
+
 </ContentPage>

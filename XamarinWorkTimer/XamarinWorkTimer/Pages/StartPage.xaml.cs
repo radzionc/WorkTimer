@@ -26,7 +26,7 @@ namespace XamarinWorkTimer.Pages
                 slider.IsVisible = false;
                 StopOrChoose.Text = g.stop;
 
-                double complete = ((int)slider.Value - (double)left / 60) / (int)slider.Value;
+                double complete = (g.period - (double)left / 60) / g.period;
                 circularText.Update(complete);
             }
             else

@@ -15,8 +15,9 @@ namespace XamarinWorkTimer.Pages.Elements
         string text = new string('|', length);
         public void Update(double complete)
         {
-            int len = (int)Math.Ceiling(complete * length);
+            int len = (int)(complete * length);
             text = new string('|', len) + new string(' ', length - len);
+
             for (int index = 0; index < text.Length; index++)
             {
                 labels[index].Text = text[index].ToString();

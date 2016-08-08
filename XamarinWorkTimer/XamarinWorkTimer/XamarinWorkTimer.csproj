@@ -44,6 +44,9 @@
     <Compile Include="g.cs" />
     <Compile Include="Interfaces\IReminderService.cs" />
     <Compile Include="Interfaces\ISQLite.cs" />
+    <Compile Include="Pages\Elements\Chart.xaml.cs">
+      <DependentUpon>Chart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ChoosePage.xaml.cs">
       <DependentUpon>ChoosePage.xaml</DependentUpon>
     </Compile>
@@ -53,6 +56,9 @@
     <Compile Include="Pages\Elements\IntervalBox.cs" />
     <Compile Include="Pages\Elements\NavigationLine.cs" />
     <Compile Include="Pages\Elements\StatisticLine.cs" />
+    <Compile Include="Pages\Elements\Today.xaml.cs">
+      <DependentUpon>Today.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
@@ -110,6 +116,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\Elements\Chart.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\Elements\Today.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
