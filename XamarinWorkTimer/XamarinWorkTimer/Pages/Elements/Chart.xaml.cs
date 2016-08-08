@@ -11,9 +11,7 @@ namespace XamarinWorkTimer.Pages
 {
     public partial class Chart : Grid
     {
-        int barsOnOnePage;
-        int bars;
-        int barSize;
+        double barSize;
         Dictionary<DateTime, int> sums = new Dictionary<DateTime, int>();
         DateTime first = g.StrToDate(g.sumDB.GetAll().First().DatePK);
         DateTime last = DateTime.Today;
@@ -35,21 +33,11 @@ namespace XamarinWorkTimer.Pages
         void sizeCreation()
         {
             if (type == g.day)
-            {
-                barsOnOnePage = 11;
-                bars = (int)(last - first).TotalDays;
-            }
+                barSize = 40;
             else if (type == g.week)
-            {
-                barsOnOnePage = 6;
-                bars = Math.Abs((last.Month - first.Month) + 12 * (last.Year - first.Year));
-            }
+                barSize = 60;
             else if (type == g.month)
-            {
-                barsOnOnePage = 5;
-                bars = (int)((last - first).TotalDays / 7);
-            }
-            barSize = 1000 / barsOnOnePage;
+                barSize = 80;
         }
         void BarsCreation()
         {
@@ -65,7 +53,7 @@ namespace XamarinWorkTimer.Pages
                     BoxView boxView = new BoxView
                     {
                         Color = Color.Teal,
-                        HeightRequest = sum/g.secondsInDay * 1000,
+                        HeightRequest = (double)sum / g.secondsInDay * 1000,
                         VerticalOptions = LayoutOptions.End
                     };
                     views.Add(boxView);
@@ -119,8 +107,8 @@ namespace XamarinWorkTimer.Pages
 
             for (int i = 0; i < views.Count(); i++)
             {
-                chart.RowDefinitions.Add(new RowDefinition { Height = new GridLength(barSize) });
-                chart.Children.Add(views[i], 0, i);
+                chart.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(barSize) });
+                chart.Children.Add(views[i], i, 0);
             }
         }
     }
