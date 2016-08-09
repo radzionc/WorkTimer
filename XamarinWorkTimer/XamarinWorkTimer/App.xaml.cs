@@ -12,6 +12,7 @@ namespace XamarinWorkTimer
     {
         StartPage startPage;
         ChoosePage choosePage;
+        IReminderService reminder = DependencyService.Get<IReminderService>();
 
         DateTime startTime;
         Interval interval;
@@ -76,7 +77,6 @@ namespace XamarinWorkTimer
                         startPage.updateUI(!stopTimer, leftTime);
                     }
                     else Stop(null, EventArgs.Empty);
-
                 }
             }
             return true;
@@ -90,7 +90,7 @@ namespace XamarinWorkTimer
             MainPage = choosePage;
             OnStartPage();
             //////Weird bag////////
-            DependencyService.Get<IReminderService>().Cancel();
+            reminder.Cancel();
         }
 
         private void LookForMidnight()
@@ -114,11 +114,6 @@ namespace XamarinWorkTimer
             Properties[g.lastTime] = DateTime.Now;
         }
 
-        public void OnStartPage()
-        {
-            startPage.updateUI(!stopTimer, g.period * 60);
-            MainPage = startPage;
-        }
 
         public void FromChooseToStartPage()
         {
@@ -132,10 +127,15 @@ namespace XamarinWorkTimer
 
             preventInterval = 0;
 
-            DependencyService.Get<IReminderService>().Remind(g.period * 60, "Got it!", "You finish " + name + "!");
+            reminder.Remind(g.period * 60, "Got it!", "You finish " + name + "!");
             OnStartPage();
         }
 
+        public void OnStartPage()
+        {
+            startPage.updateUI(!stopTimer, g.period * 60);
+            MainPage = startPage;
+        }
         public void OnChoosePage(object sender, EventArgs args)
         {
             MainPage = choosePage;
@@ -158,9 +158,8 @@ namespace XamarinWorkTimer
         protected override void OnResume()
         {
             stopTick = false;
-            DependencyService.Get<IReminderService>().Remove();
+            reminder.Remove();
             Tick(); Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
-            System.Diagnostics.Debug.WriteLine("Resume");
         }
     }
 }
