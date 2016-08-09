@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using XamarinWorkTimer;
+using Android.Content;
 
 namespace XamarinWorkTimer.Droid
 {
@@ -18,7 +19,7 @@ namespace XamarinWorkTimer.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            this.Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(app = new App());
         }
@@ -27,6 +28,8 @@ namespace XamarinWorkTimer.Droid
         {
             if (!app.InStartPage)
                 app.OnStartPage();
+            else
+                MoveTaskToBack(true);
         }
 
         protected override void OnDestroy()
