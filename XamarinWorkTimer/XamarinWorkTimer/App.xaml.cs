@@ -33,7 +33,7 @@ namespace XamarinWorkTimer
         {
 
             InitializeComponent();
-            new Test();
+            //new Test();
             PropertiesChecking();
             LookForMidnight();
             startPage = new StartPage();

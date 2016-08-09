@@ -21,10 +21,15 @@ namespace XamarinWorkTimer.Pages
 
             navigationLine.Clicked += (object sender, EventArgs args) =>
             {
-                if ((string)sender == g.today)
+                string type = (string)sender;
+                if (type == g.today)
                     GridMain(today);
                 else
-                    GridMain(new Chart((string)sender));
+                {
+                    Chart chart = g.GetChart(type);
+                    GridMain(chart);
+                    chart.SetOnPosition();
+                }
             };
         }
 

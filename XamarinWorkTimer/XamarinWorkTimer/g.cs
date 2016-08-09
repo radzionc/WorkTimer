@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using XamarinWorkTimer.DataBase;
-
+using XamarinWorkTimer.Pages;
 
 namespace XamarinWorkTimer
 {
@@ -39,6 +39,37 @@ namespace XamarinWorkTimer
         public static DB<Interval> intervalDB = new DB<Interval>(interval);
         public static DB<Sum> sumDB = new DB<Sum>(sum);
 
+        public static Chart dayChart;
+        public static Chart weekChart;
+        public static Chart monthChart;
+
+        public static Chart GetChart(string type)
+        {
+            Chart chart = null;
+            if (type == g.day)
+                chart = dayChart;
+            else if (type == g.week)
+                chart = weekChart;
+            else if (type == g.month)
+                chart = monthChart;
+
+            if (chart == null)
+            {
+                chart = new Chart(type);
+                SetChart(chart, type);
+            }
+            return chart;
+        }
+        
+        public static void SetChart(Chart chart, string type)
+        {
+            if (type == g.day)
+                dayChart = chart;
+            else if (type == g.week)
+                weekChart = chart;
+            else if (type == g.month)
+                monthChart = chart;
+        }
         public static  int TodaySum()
         {
             int result = 0;
@@ -56,7 +87,7 @@ namespace XamarinWorkTimer
         {
             TimeSpan sec = TimeSpan.FromSeconds(seconds);
             if (seconds > secondsInDay)
-                return sec.ToString(@"0:dd\.hh\:mm\:ss") + "days";
+                return sec.ToString(@"dd\.hh\:mm\:ss");
             if (seconds < 3600)
                 return sec.ToString(@"mm\:ss");
             else if (seconds == 3600)

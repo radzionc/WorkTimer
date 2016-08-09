@@ -23,13 +23,17 @@ namespace XamarinWorkTimer.Pages
         {
             this.type = type;
             InitializeComponent();
-
             foreach (Sum sum in g.sumDB.GetAll())
                 sums.Add(g.StrToDate(sum.DatePK), sum.Value);
             //sums.Add(DateTime.Today, g.TodaySum());
 
             sizeCreation();
             BarsCreation();
+        }
+
+        public void SetOnPosition()
+        {
+            scroll.ScrollToAsync(scroll.ContentSize.Width, 0, false);
         }
 
         void sizeCreation()
@@ -65,10 +69,11 @@ namespace XamarinWorkTimer.Pages
                 {
                     for(DateTime d = date; d <= last; date = date.AddDays(1.0))
                     {
-                        if (g.GetIso8601WeekOfYear(d) == g.GetIso8601WeekOfYear(date) && sums.ContainsKey(d))
+                        bool sameWeek = g.GetIso8601WeekOfYear(d) == g.GetIso8601WeekOfYear(date);
+                        if (sameWeek && sums.ContainsKey(d))
                             sum += sums[d];
 
-                        if (g.GetIso8601WeekOfYear(d) != g.GetIso8601WeekOfYear(date) || d == last)
+                        if (!sameWeek || d == last)
                         {
                             date = d;
                             string name = $"{g.GetIso8601WeekOfYear(date).ToString()}'s week";
@@ -82,14 +87,15 @@ namespace XamarinWorkTimer.Pages
                 {
                     for (DateTime d = date; d <= last; date = date.AddDays(1.0))
                     {
-                        if (d.Month == date.Month && sums.ContainsKey(d))
+                        bool sameMonth = d.Month == date.Month;
+                        if (sameMonth && sums.ContainsKey(d))
                             sum += sums[d];
 
-                        if (d.Month != date.Month || d == last)
+                        if (!sameMonth || d == last)
                         {
                             date = d;
-                            string log = date.Month.ToString("MMM");
-                            AddBar(log, (double)sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 600, sum, sum / DateTime.DaysInMonth(date.Year, date.Month));
+                            string name = date.ToString("MMMM");
+                            AddBar(name, (double)sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 600, sum, sum / DateTime.DaysInMonth(date.Year, date.Month));
                             break;
                         }
                     }

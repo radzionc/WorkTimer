@@ -10,7 +10,8 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <ScrollView Orientation="Horizontal">
+    <ScrollView x:Name="scroll"
+                Orientation="Horizontal">
       <Grid x:Name="chart"
             Grid.Row="0">
       </Grid>
