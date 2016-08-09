@@ -6,5 +6,6 @@ namespace XamarinWorkTimer
     {
         void Remind(int seconds, string title, string message);
         void Cancel();
+        void Remove();
     }
 }

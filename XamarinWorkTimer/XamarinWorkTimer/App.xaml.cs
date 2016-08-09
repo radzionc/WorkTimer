@@ -158,7 +158,7 @@ namespace XamarinWorkTimer
         protected override void OnResume()
         {
             stopTick = false;
-
+            DependencyService.Get<IReminderService>().Remove();
             Tick(); Device.StartTimer(TimeSpan.FromSeconds(0.5), Tick);
             System.Diagnostics.Debug.WriteLine("Resume");
         }

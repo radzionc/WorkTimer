@@ -16,6 +16,7 @@ namespace XamarinWorkTimer.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
         App app;
+        public static bool IsActive { get; set; }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -35,8 +36,18 @@ namespace XamarinWorkTimer.Droid
         protected override void OnDestroy()
         {
             base.OnDestroy();
-
             AndroidReminderService.pendingIntent?.Cancel();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            IsActive = true;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            IsActive = false;
         }
     }
 

@@ -28,5 +28,11 @@ namespace XamarinWorkTimer.Droid
         {
             pendingIntent?.Cancel();
         }
+
+        public void Remove()
+        {
+            NotificationManager manager = NotificationManager.FromContext(Forms.Context);
+            manager.Cancel(0);
+        }
     }
 }

@@ -1,10 +1,7 @@
 using Android.Content;
 using Android.App;
-using Android.Support.V4.App;
-using Android.Graphics;
 using Android.Support.V4.Content;
 using XamarinWorkTimer.Droid.Implementations;
-using Android.OS;
 
 namespace XamarinWorkTimer.Droid
 {
@@ -17,35 +14,32 @@ namespace XamarinWorkTimer.Droid
             string title = intent.GetStringExtra("title");
 
             Intent notIntent = new Intent(context, typeof(NotificationService));
-            StartWakefulService(context, notIntent);
                 
             PendingIntent contentIntent = PendingIntent.GetActivity(context, 0, notIntent, PendingIntentFlags.CancelCurrent);
             NotificationManager manager = NotificationManager.FromContext(context);
-            var style = new Notification.BigTextStyle();
-            style.BigText(message);
 
-            int resourceId = Resource.Drawable.icon;
+            var bigTextStyle = new Notification.BigTextStyle()
+                        .SetBigContentTitle(title)
+                        .BigText(message);
 
-            var wearableExtender = new Notification.WearableExtender()
-    .SetBackground(BitmapFactory.DecodeResource(context.Resources, resourceId))
-                ;
-
-            //Generate a notification with just short text and small icon
-            var builder = new Notification.Builder(context)
-                .SetPriority((int)NotificationPriority.Max)
-                .SetVisibility(NotificationVisibility.Public)
-                .SetDefaults(NotificationDefaults.Vibrate)
-                .SetCategory(Notification.CategoryAlarm)
+            Notification.Builder builder = new Notification.Builder(context)
                 .SetContentIntent(contentIntent)
                 .SetSmallIcon(Resource.Drawable.icon)
                 .SetContentTitle(title)
                 .SetContentText(message)
+                .SetStyle(bigTextStyle)
                 .SetWhen(Java.Lang.JavaSystem.CurrentTimeMillis())
-                .SetAutoCancel(true);
+                .SetAutoCancel(true)
+                .SetPriority((int)NotificationPriority.High)
+                .SetVisibility(NotificationVisibility.Public)
+                .SetDefaults(NotificationDefaults.Vibrate)
+                .SetCategory(Notification.CategoryAlarm);
 
-            var notification = builder.Build();
-            manager.Notify(0, notification);
-
+            if (!MainActivity.IsActive)
+            {
+                manager.Notify(0, builder.Build());
+                StartWakefulService(context, notIntent);
+            }
         }
     }
 }
