@@ -15,7 +15,7 @@ namespace XamarinWorkTimer.Pages
         BoxView previousBox;
         Dictionary<DateTime, int> sums = new Dictionary<DateTime, int>();
         DateTime first = g.StrToDate(g.sumDB.GetAll().First().DatePK);
-        DateTime last = DateTime.Today;
+        DateTime last = g.StrToDate(g.sumDB.GetAll().Last().DatePK);
         string type;
         int position = 0;
 
@@ -26,7 +26,7 @@ namespace XamarinWorkTimer.Pages
 
             foreach (Sum sum in g.sumDB.GetAll())
                 sums.Add(g.StrToDate(sum.DatePK), sum.Value);
-            sums.Add(DateTime.Today, g.TodaySum());
+            //sums.Add(DateTime.Today, g.TodaySum());
 
             sizeCreation();
             BarsCreation();
