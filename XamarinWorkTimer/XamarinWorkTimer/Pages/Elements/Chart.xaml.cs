@@ -67,7 +67,7 @@ namespace XamarinWorkTimer.Pages
                 }
                 else if(type == g.week)
                 {
-                    for(DateTime d = date; d <= last; date = date.AddDays(1.0))
+                    for(DateTime d = date; d <= last; d = d.AddDays(1.0))
                     {
                         bool sameWeek = g.GetIso8601WeekOfYear(d) == g.GetIso8601WeekOfYear(date);
                         if (sameWeek && sums.ContainsKey(d))
@@ -75,9 +75,9 @@ namespace XamarinWorkTimer.Pages
 
                         if (!sameWeek || d == last)
                         {
-                            date = d;
                             string name = $"{g.GetIso8601WeekOfYear(date).ToString()}'s week";
                             AddBar(name, (double)sum / 7 / g.secondsInDay * 600, sum, sum / 7);
+                            date = d;
                             break;
                         }
                     }
@@ -85,7 +85,7 @@ namespace XamarinWorkTimer.Pages
 
                 else if (type == g.month)
                 {
-                    for (DateTime d = date; d <= last; date = date.AddDays(1.0))
+                    for (DateTime d = date; d <= last; d = d.AddDays(1.0))
                     {
                         bool sameMonth = d.Month == date.Month;
                         if (sameMonth && sums.ContainsKey(d))
@@ -93,9 +93,9 @@ namespace XamarinWorkTimer.Pages
 
                         if (!sameMonth || d == last)
                         {
-                            date = d;
                             string name = date.ToString("MMMM");
                             AddBar(name, (double)sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 600, sum, sum / DateTime.DaysInMonth(date.Year, date.Month));
+                            date = d;
                             break;
                         }
                     }
