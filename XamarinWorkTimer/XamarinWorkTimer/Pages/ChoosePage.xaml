@@ -9,7 +9,8 @@
            Placeholder="New Item"
            FontSize="Large"
            TextChanged="OnTextChanged"
-           Completed="EntryInputCompleted"/>
+           Completed="EntryInputCompleted"
+           TextColor="Silver"/>
     
     <ScrollView>
       <StackLayout x:Name="itemsLayout"/>

@@ -2,9 +2,7 @@
 <Grid xmlns="http://xamarin.com/schemas/2014/forms"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       x:Class="XamarinWorkTimer.Pages.Chart"
-      x:Name="grid"
-      ColumnSpacing="2"
-      Padding="5">
+      x:Name="grid">
   
     <Grid.RowDefinitions>
       <RowDefinition Height="7*" />
@@ -20,28 +18,23 @@
     
     <StackLayout x:Name="logLayout" 
                  Grid.Row="1">
-      <BoxView Color="Silver" 
+      <BoxView Color="Teal" 
                WidthRequest="100"
                HeightRequest="2"/>
-      
-      <StackLayout Orientation="Horizontal">
-        <Label x:Name="name" 
-               HorizontalOptions="Center"
-               TextColor="Silver"/>
-      </StackLayout>  
+
+      <Label x:Name="name" 
+             TextColor="Silver"/>
       <StackLayout x:Name="summaryLayout"
+                   IsVisible="False"
                    Orientation="Horizontal">
-        <Label Text="Summary"
-               HorizontalOptions="StartAndExpand"/>
-        <Label x:Name="summary"
-               HorizontalOptions="End"/>
+        <Label Text="Summary" HorizontalOptions="StartAndExpand"/>
+        <Label x:Name="summary" HorizontalOptions="End"/>
       </StackLayout>  
       <StackLayout x:Name="averageLayout"
+                   IsVisible="False"
                    Orientation="Horizontal">
-        <Label Text="Average"
-               HorizontalOptions="StartAndExpand"/>
-        <Label x:Name="average"
-               HorizontalOptions="End"/>
+        <Label Text="Average" HorizontalOptions="StartAndExpand"/>
+        <Label x:Name="average" HorizontalOptions="End"/>
       </StackLayout>  
     </StackLayout>
            

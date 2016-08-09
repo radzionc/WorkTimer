@@ -59,7 +59,7 @@ namespace XamarinWorkTimer.Pages
                         name = "Yesterday";
                     else
                         name = date.ToString(g.dateFormat);
-                    AddBar(name, (double)sum / g.secondsInDay * 1000, sum);
+                    AddBar(name, (double)sum / g.secondsInDay * 600, sum);
                 }
                 else if(type == g.week)
                 {
@@ -72,7 +72,7 @@ namespace XamarinWorkTimer.Pages
                         {
                             date = d;
                             string name = $"{g.GetIso8601WeekOfYear(date).ToString()}'s week";
-                            AddBar(name, (double)sum / 7 / g.secondsInDay * 1000, sum, sum / 7);
+                            AddBar(name, (double)sum / 7 / g.secondsInDay * 600, sum, sum / 7);
                             break;
                         }
                     }
@@ -89,7 +89,7 @@ namespace XamarinWorkTimer.Pages
                         {
                             date = d;
                             string log = date.Month.ToString("MMM");
-                            AddBar(log, (double)sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 1000, sum, sum / DateTime.DaysInMonth(date.Year, date.Month));
+                            AddBar(log, (double)sum / DateTime.DaysInMonth(date.Year, date.Month) / g.secondsInDay * 600, sum, sum / DateTime.DaysInMonth(date.Year, date.Month));
                             break;
                         }
                     }
@@ -118,17 +118,17 @@ namespace XamarinWorkTimer.Pages
                         previousBox = boxView;
                         boxView.Color = Color.Silver;
 
-                        logLayout.IsVisible = true;
                         this.name.Text = name;
-                        if (sum == 0)
-                            summaryLayout.IsVisible = false;
-                        else
-                            summary.Text = g.SecToStr(sum);
+                        summaryLayout.IsVisible = true;
+                        summary.Text = g.SecToStr(sum);
 
-                        if (average == 0)
-                            averageLayout.IsVisible = false;
+                        if (type != g.day)
+                        {
+                            averageLayout.IsVisible = true;
+                            this.average.Text = g.SecToStr(average);
+                        }
                         else
-                            this.average.Text = g.SecToStr(sum);
+                            averageLayout.IsVisible = false;
                     }
                 })
             });
