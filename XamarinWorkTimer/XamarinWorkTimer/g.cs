@@ -27,6 +27,7 @@ namespace XamarinWorkTimer
         public const string day = "days";
         public const string today = "today";
         public const int secondsInDay = 86400;
+        public const int barMaxHeight = 550;
 
         public static int period
         {
@@ -58,6 +59,9 @@ namespace XamarinWorkTimer
                 chart = new Chart(type);
                 SetChart(chart, type);
             }
+            else
+                chart.Update();
+
             return chart;
         }
         
